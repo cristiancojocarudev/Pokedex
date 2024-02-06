@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject var viewModel = ViewModel()
+    
     var body: some View {
         ZStack {
             GeometryReader { geo in
@@ -21,23 +23,52 @@ struct ContentView: View {
             GeometryReader { geo in
                 VStack {
                     HStack {
-                        Text("Pokedex")
-                            .font(.largeTitle)
-                            .foregroundStyle(.red)
-                            .padding(.leading)
-                            .shadow(radius: 3)
-                        Image(.pokedexImg)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(height: geo.size.height * 0.1)
+                        HStack {
+                            Text("Pokedex")
+                                .font(.largeTitle)
+                                .foregroundStyle(.red)
+                                .padding(.leading)
+                                .shadow(radius: 3)
+                            Image(.pokedexImg)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(height: geo.size.height * 0.1)
+                        }
+                        .background(.white)
+                        .cornerRadius(15)
+                        .shadow(color: .red, radius: 5, x: geo.size.width * 0.03, y: geo.size.width * 0.03)
+                        .shadow(color: .blue, radius: 5, x: -geo.size.width * 0.03, y: -geo.size.width * 0.03)
+                        
+                        Spacer()
                     }
-                    .background(.white)
-                    .cornerRadius(15)
-                    .shadow(color: .red, radius: 5, x: geo.size.width * 0.03, y: geo.size.width * 0.03)
-                    .shadow(color: .blue, radius: 5, x: -geo.size.width * 0.03, y: -geo.size.width * 0.03)
+                    
+                    Spacer()
+                        .frame(height: geo.size.height * 0.1)
+                    
+                    HStack {
+                        Spacer()
+                        ScrollView {
+                            VStack {
+                                ForEach(viewModel.pokemons, id: \.self) { pokemon in
+                                    HStack {
+                                        Text(pokemon)
+                                            .frame(width: geo.size.width * 0.8, height: geo.size.height * 0.1)
+                                            .background(.white)
+                                            .cornerRadius(15)
+                                    }
+                                    .shadow(radius: 5)
+                                }
+                            }
+                        }
+                        Spacer()
+                    }
                 }
                 .padding()
             }
+        }
+        
+        .onAppear() {
+            viewModel.laodData()
         }
     }
 }
