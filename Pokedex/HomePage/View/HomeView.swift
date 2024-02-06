@@ -37,7 +37,7 @@ struct HomeView: View {
                             Spacer()
                             ScrollView {
                                 VStack {
-                                    ForEach(homeViewModel.filteredPokemons, id: \.self) { pokemon in
+                                    ForEach(homeViewModel.filteredAndPaginatedPokemons, id: \.self) { pokemon in
                                         HStack {
                                             Text(pokemon.name)
                                                 .frame(width: geo.size.width * 0.8, height: geo.size.height * 0.1)
@@ -48,8 +48,32 @@ struct HomeView: View {
                                     }
                                 }
                             }
+                            .frame(height: geo.size.height * 0.6)
                             Spacer()
                         }
+                        
+                        HStack {
+                            Spacer()
+                            Image(systemName: "arrow.left")
+                                .padding()
+                                .foregroundStyle(homeViewModel.canGoBack ? .black : .gray)
+                                .onTapGesture {
+                                    homeViewModel.goBack()
+                                }
+                            Spacer()
+                            Spacer()
+                            Image(systemName: "arrow.right")
+                                .padding()
+                                .foregroundStyle(homeViewModel.canGoForward ? .black : .gray)
+                                .onTapGesture {
+                                    homeViewModel.goForward()
+                                }
+                            Spacer()
+                        }
+                        .ignoresSafeArea()
+                        .frame(width: geo.size.width * 0.5, height: geo.size.height * 0.1)
+                        .background(.green)
+                        .cornerRadius(15)
                     }
                     .padding()
                 }
@@ -57,6 +81,9 @@ struct HomeView: View {
         }
         .onAppear() {
             homeViewModel.loadData()
+        }
+        .onChange(of: homeViewModel.searchText) { oldValue, newValue in
+            homeViewModel.page = 0
         }
     }
 }
