@@ -9,13 +9,13 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        GeometryReader { geo in
+            Image(.pokewallpaper)
+                .resizable()
+                .scaledToFill()
+                .frame(width: geo.size.width, height: geo.size.height * 1.1, alignment: .center)
+                .ignoresSafeArea()
         }
-        .padding()
     }
 }
 
