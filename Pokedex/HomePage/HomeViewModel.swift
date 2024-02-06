@@ -7,7 +7,7 @@
 
 import Foundation
 
-class ViewModel: ObservableObject {
+class HomeViewModel: ObservableObject {
     @Published var pokemons: [String] = []
     
     func laodData() {

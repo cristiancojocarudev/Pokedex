@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-struct ContentView: View {
-    @StateObject var viewModel = ViewModel()
+struct HomeView: View {
+    @StateObject var homeViewModel = HomeViewModel()
     
     var body: some View {
         ZStack {
@@ -23,22 +23,7 @@ struct ContentView: View {
             GeometryReader { geo in
                 VStack {
                     HStack {
-                        HStack {
-                            Text("Pokedex")
-                                .font(.largeTitle)
-                                .foregroundStyle(.red)
-                                .padding(.leading)
-                                .shadow(radius: 3)
-                            Image(.pokedexImg)
-                                .resizable()
-                                .scaledToFit()
-                                .frame(height: geo.size.height * 0.1)
-                        }
-                        .background(.white)
-                        .cornerRadius(15)
-                        .shadow(color: .red, radius: 5, x: geo.size.width * 0.03, y: geo.size.width * 0.03)
-                        .shadow(color: .blue, radius: 5, x: -geo.size.width * 0.03, y: -geo.size.width * 0.03)
-                        
+                        LogoView(geo: geo)
                         Spacer()
                     }
                     
@@ -49,7 +34,7 @@ struct ContentView: View {
                         Spacer()
                         ScrollView {
                             VStack {
-                                ForEach(viewModel.pokemons, id: \.self) { pokemon in
+                                ForEach(homeViewModel.pokemons, id: \.self) { pokemon in
                                     HStack {
                                         Text(pokemon)
                                             .frame(width: geo.size.width * 0.8, height: geo.size.height * 0.1)
@@ -68,11 +53,11 @@ struct ContentView: View {
         }
         
         .onAppear() {
-            viewModel.laodData()
+            homeViewModel.laodData()
         }
     }
 }
 
 #Preview {
-    ContentView()
+    HomeView()
 }
