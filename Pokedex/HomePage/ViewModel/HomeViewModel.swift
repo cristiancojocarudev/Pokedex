@@ -11,19 +11,21 @@ class HomeViewModel: ObservableObject {
     
     @Published var searchText: String = ""
     
-    var pokemons: [String] = []
-    var filteredPokemons: [String] {
+    @Published var pokemons: [PokemonReference] = []
+    var filteredPokemons: [PokemonReference] {
         get {
             if searchText.isEmpty {
                 return pokemons
             }
             return pokemons.filter() {
-                $0.lowercased().contains(searchText.lowercased())
+                $0.name.lowercased().contains(searchText.lowercased())
             }
         }
     }
     
-    func laodData() {
-        pokemons = ["Bulbasaur", "Charizard", "Phickachu"]
+    func loadData() {
+        Task {
+            pokemons = try await HomeNetwork.shared.fetchPokemonsReferences(url: HomeNetwork.URLs.pokemonsReferences.rawValue, items: [])
+        }
     }
 }

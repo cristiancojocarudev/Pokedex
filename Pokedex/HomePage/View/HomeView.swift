@@ -39,7 +39,7 @@ struct HomeView: View {
                                 VStack {
                                     ForEach(homeViewModel.filteredPokemons, id: \.self) { pokemon in
                                         HStack {
-                                            Text(pokemon)
+                                            Text(pokemon.name)
                                                 .frame(width: geo.size.width * 0.8, height: geo.size.height * 0.1)
                                                 .background(.white)
                                                 .cornerRadius(15)
@@ -56,7 +56,7 @@ struct HomeView: View {
             }
         }
         .onAppear() {
-            homeViewModel.laodData()
+            homeViewModel.loadData()
         }
     }
 }
