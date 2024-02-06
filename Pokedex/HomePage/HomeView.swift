@@ -11,47 +11,50 @@ struct HomeView: View {
     @StateObject var homeViewModel = HomeViewModel()
     
     var body: some View {
-        ZStack {
-            GeometryReader { geo in
-                Image(.pokewallpaper)
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: geo.size.width, height: geo.size.height * 1.1, alignment: .center)
-                    .ignoresSafeArea()
-            }
-            
-            GeometryReader { geo in
-                VStack {
-                    HStack {
-                        LogoView(geo: geo)
-                        Spacer()
-                    }
-                    
-                    Spacer()
-                        .frame(height: geo.size.height * 0.1)
-                    
-                    HStack {
-                        Spacer()
-                        ScrollView {
-                            VStack {
-                                ForEach(homeViewModel.pokemons, id: \.self) { pokemon in
-                                    HStack {
-                                        Text(pokemon)
-                                            .frame(width: geo.size.width * 0.8, height: geo.size.height * 0.1)
-                                            .background(.white)
-                                            .cornerRadius(15)
+        
+        NavigationStack {
+            ZStack {
+                GeometryReader { geo in
+                    Image(.pokewallpaper)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: geo.size.width, height: geo.size.height * 1.1, alignment: .center)
+                        .ignoresSafeArea()
+                }
+                
+                GeometryReader { geo in
+                    VStack {
+                        HStack {
+                            LogoView(geo: geo)
+                            Spacer()
+                        }
+                        
+                        SearchBar(text: $homeViewModel.searchText)
+                            .padding()
+                            .shadow(radius: 5)
+                        
+                        HStack {
+                            Spacer()
+                            ScrollView {
+                                VStack {
+                                    ForEach(homeViewModel.filteredPokemons, id: \.self) { pokemon in
+                                        HStack {
+                                            Text(pokemon)
+                                                .frame(width: geo.size.width * 0.8, height: geo.size.height * 0.1)
+                                                .background(.white)
+                                                .cornerRadius(15)
+                                        }
+                                        .shadow(radius: 5)
                                     }
-                                    .shadow(radius: 5)
                                 }
                             }
+                            Spacer()
                         }
-                        Spacer()
                     }
+                    .padding()
                 }
-                .padding()
             }
         }
-        
         .onAppear() {
             homeViewModel.laodData()
         }
