@@ -58,7 +58,9 @@ struct HomeView: View {
                                 .padding()
                                 .foregroundStyle(homeViewModel.canGoBack ? .black : .gray)
                                 .onTapGesture {
-                                    homeViewModel.goBack()
+                                    if homeViewModel.canGoBack {
+                                        homeViewModel.goBack()
+                                    }
                                 }
                             Spacer()
                             Spacer()
@@ -66,13 +68,15 @@ struct HomeView: View {
                                 .padding()
                                 .foregroundStyle(homeViewModel.canGoForward ? .black : .gray)
                                 .onTapGesture {
-                                    homeViewModel.goForward()
+                                    if homeViewModel.canGoForward {
+                                        homeViewModel.goForward()
+                                    }
                                 }
                             Spacer()
                         }
                         .ignoresSafeArea()
                         .frame(width: geo.size.width * 0.5, height: geo.size.height * 0.1)
-                        .background(.green)
+                        .background(.white)
                         .cornerRadius(15)
                     }
                     .padding()
