@@ -34,7 +34,7 @@ struct PokemonReference: Decodable, Hashable {
 }
 
 struct PokemonDetails: Decodable {
-    /*var abilities: [AbilityWrapper]
+    var abilities: [AbilityWrapper]
     var base_experience: Int
     var forms: [Form]
     var game_indices: [GameIndex]
@@ -42,10 +42,10 @@ struct PokemonDetails: Decodable {
     var moves: [MoveWrapper]
     var name: String
     var species: Specie
-    var sprites: SpritesWrapper
     var stats: [StatWrapper]
     var types: [PokeTypeWrapper]
-    var weight: Int*/
+    var weight: Int
+    var sprites: SpritesWrapper
 }
 
 struct AbilityWrapper: Decodable {
@@ -83,13 +83,13 @@ struct Specie: Decodable {
 struct SpritesWrapper: Decodable {
     var back_default: String
     var front_default: String
-    var other: [OtherSpritesWrapper]
+    var other: OtherSpritesWrapper
 }
 
 struct OtherSpritesWrapper: Decodable {
     var dream_world: FrontSprite
     var home: FrontSprite
-    var official_atrwork: FrontSprite
+    //var official_artwork: FrontSprite
     var showdown: FrontAndBackSprite
 }
 
