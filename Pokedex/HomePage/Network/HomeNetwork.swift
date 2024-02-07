@@ -14,6 +14,7 @@ class HomeNetwork {
     
     enum URLs: String {
         case pokemonsReferences = "https://pokeapi.co/api/v2/pokemon"
+        case pokemonDetails = "https://pokeapi.co/api/v2/pokemon/"
     }
     
     enum StatusError: Error {
@@ -42,5 +43,22 @@ class HomeNetwork {
         } else {
             return items
         }
+    }
+    
+    func fetchPokemonDetails(pokemonId: Int) async throws -> PokemonDetails {
+        let url = URLs.pokemonDetails.rawValue + String(pokemonId)
+        guard let url = URL(string: url) else {
+            fatalError("Cannot build URL")
+        }
+
+        let (data, response) = try await URLSession.shared.data(from: url)
+        
+        guard let reponse = response as? HTTPURLResponse, (200...299).contains(reponse.statusCode) else {
+            print("Error with the response, unexpected status code: \(String(describing: response))")
+            throw StatusError.error
+        }
+
+        let pokemonDetails = try JSONDecoder().decode(PokemonDetails.self, from: data)
+        return pokemonDetails
     }
 }
