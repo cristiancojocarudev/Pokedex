@@ -46,10 +46,10 @@ struct DetailsHeaderView: View {
                 .frame(width: geo.size.width, height: geo.size.height * 0.25, alignment: .bottomLeading)
                 .padding(.leading, geo.size.width * 0.2)
                 .padding(.bottom, geo.size.height * 0.05)
-                   
             }
         }
         .frame(width: geo.size.width, height: geo.size.height * 0.25)
+        .background(.white)
         .cornerRadius(36)
         .overlay(
             RoundedRectangle(cornerRadius: 36)

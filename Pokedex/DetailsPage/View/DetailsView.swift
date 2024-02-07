@@ -18,6 +18,149 @@ struct DetailsView: View {
     
     var body: some View {
         ZStack {
+            
+            GeometryReader { geo in
+                VStack {
+                    ScrollView {
+                        VStack {}
+                            .frame(height: geo.size.height * 0.25)
+                        Text("Images")
+                            .font(.title2)
+                            .padding()
+                            .frame(width: geo.size.width, alignment: .leading)
+                        HStack {
+                            VStack {
+                                AsyncImage(url: URL(string: details.sprites.front_default)) { image in
+                                    image
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: geo.size.width / 4, height: geo.size.height * 0.15)
+                                } placeholder: {
+                                    ProgressView()
+                                }
+                                .cornerRadius(15)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 36)
+                                        .stroke(.black, lineWidth: 5)
+                                )
+                                AsyncImage(url: URL(string: details.sprites.back_default)) { image in
+                                    image
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: geo.size.width / 4, height: geo.size.height * 0.15)
+                                } placeholder: {
+                                    ProgressView()
+                                }
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 36)
+                                        .stroke(.black, lineWidth: 5)
+                                )
+                            }
+                            VStack {
+                                AsyncImage(url: URL(string: details.sprites.other.home.front_default)) { image in
+                                    image
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: geo.size.width / 4, height: geo.size.height * 0.15)
+                                } placeholder: {
+                                    ProgressView()
+                                }
+                                .cornerRadius(15)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 36)
+                                        .stroke(.black, lineWidth: 5)
+                                )
+                                AsyncImage(url: URL(string: details.sprites.other.dream_world.front_default)) { image in
+                                    image
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: geo.size.width / 4, height: geo.size.height * 0.15)
+                                } placeholder: {
+                                    ProgressView()
+                                }
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 36)
+                                        .stroke(.black, lineWidth: 5)
+                                )
+                            }
+                            VStack {
+                                AsyncImage(url: URL(string: details.sprites.other.showdown.front_default)) { image in
+                                    image
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: geo.size.width / 4, height: geo.size.height * 0.15)
+                                } placeholder: {
+                                    ProgressView()
+                                }
+                                .cornerRadius(15)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 36)
+                                        .stroke(.black, lineWidth: 5)
+                                )
+                                AsyncImage(url: URL(string: details.sprites.other.showdown.back_default)) { image in
+                                    image
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: geo.size.width / 4, height: geo.size.height * 0.15)
+                                } placeholder: {
+                                    ProgressView()
+                                }
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 36)
+                                        .stroke(.black, lineWidth: 5)
+                                )
+                            }
+                        }
+                        
+                        HStack {}
+                            .frame(width: geo.size.width, height: geo.size.height * 0.004)
+                            .background(.black)
+                            .padding(.vertical)
+                        
+                        Text("Main Stats")
+                            .font(.title2)
+                            .padding(.horizontal)
+                            .padding(.bottom, geo.size.height * 0.01)
+                            .frame(width: geo.size.width, alignment: .leading)
+                        VStack {
+                            ForEach(detailsViewModel.mainStatsTable, id: \.self) { row in
+                                HStack {
+                                    ForEach(row, id: \.name) { pokeStat in
+                                        VStack {
+                                            Text(pokeStat.name)
+                                            Text(String(pokeStat.value))
+                                        }
+                                        .frame(width: geo.size.width * 0.22, height: geo.size.width * 0.2 * 1)
+                                        .multilineTextAlignment(.center)
+                                        .padding(.horizontal)
+                                    }
+                                }
+                            }
+                        }
+                        
+                        
+                        HStack {}
+                            .frame(width: geo.size.width, height: geo.size.height * 0.004)
+                            .background(.black)
+                            .padding(.vertical)
+                        
+                        HStack {
+                            Text("Specie:")
+                                .font(.title2)
+                                .padding(.horizontal)
+                            Text(details.species.name)
+                            Spacer()
+                        }
+                        
+                        HStack {}
+                            .frame(width: geo.size.width, height: geo.size.height * 0.004)
+                            .background(.black)
+                            .padding(.vertical)
+                    }
+                }
+                .ignoresSafeArea()
+            }
+            
             GeometryReader { geo in
                DetailsHeaderView(geo: geo, details: details)
             }
