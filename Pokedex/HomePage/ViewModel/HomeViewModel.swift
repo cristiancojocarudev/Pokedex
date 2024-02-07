@@ -77,9 +77,12 @@ class HomeViewModel: ObservableObject {
     }
     
     func loadData() {
-        Task {
-            let fetchedPokemons = try await HomeNetwork.shared.fetchPokemonsReferences(url: HomeNetwork.URLs.pokemonsReferences.rawValue, items: [])
-            pokemons = pokemonsWithId(pokemons: fetchedPokemons)
+        HomeNetwork.shared.fetchPokemonsReferences(url: HomeNetwork.URLs.pokemonsReferences.rawValue, items: []) { pokemons in
+            if let pokemons = pokemons {
+                DispatchQueue.main.async {
+                    self.pokemons = pokemons
+                }
+            }
         }
     }
     

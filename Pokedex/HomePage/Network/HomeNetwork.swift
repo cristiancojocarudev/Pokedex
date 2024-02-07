@@ -21,44 +21,66 @@ class HomeNetwork {
         case error
     }
     
-    func fetchPokemonsReferences(url: String, items: [PokemonReference]) async throws -> [PokemonReference] {
+    func fetchPokemonsReferences(url: String, items: [PokemonReference], completion: @escaping ([PokemonReference]?) -> Void) {
         guard let url = URL(string: url) else {
             fatalError("Cannot build URL")
         }
-
-        let (data, response) = try await URLSession.shared.data(from: url)
         
-        guard let reponse = response as? HTTPURLResponse, (200...299).contains(reponse.statusCode) else {
-            print("Error with the response, unexpected status code: \(String(describing: response))")
-            throw StatusError.error
+        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+            guard let reponse = response as? HTTPURLResponse, (200...299).contains(reponse.statusCode) else {
+                print("Error with the response, unexpected status code: \(String(describing: response))")
+                completion(nil)
+                return
+            }
+            if let data = data {
+                do {
+                    let pokemonsReferences = try JSONDecoder().decode(PokemonsReferences.self, from: data)
+                    var items = items
+                    for reference in pokemonsReferences.results {
+                        items.append(reference)
+                    }
+                    if let next = pokemonsReferences.next {
+                        self.fetchPokemonsReferences(url: next, items: items) { items in
+                            completion(items)
+                        }
+                    } else {
+                        completion(items)
+                    }
+                } catch {
+                    completion(nil)
+                }
+            } else if let error = error {
+                print("HTTP Request Failed \(error)")
+                completion(nil)
+            }
         }
-
-        let pokemonsReferences = try JSONDecoder().decode(PokemonsReferences.self, from: data)
-        var items = items
-        for reference in pokemonsReferences.results {
-            items.append(reference)
-        }
-        if let next = pokemonsReferences.next {
-            return try await fetchPokemonsReferences(url: next, items: items)
-        } else {
-            return items
-        }
+        task.resume()
     }
     
-    func fetchPokemonDetails(pokemonId: Int) async throws -> PokemonDetails {
+    func fetchPokemonDetails(pokemonId: Int, completion: @escaping (PokemonDetails?) -> Void) {
         let url = URLs.pokemonDetails.rawValue + String(pokemonId)
         guard let url = URL(string: url) else {
             fatalError("Cannot build URL")
         }
 
-        let (data, response) = try await URLSession.shared.data(from: url)
-        
-        guard let reponse = response as? HTTPURLResponse, (200...299).contains(reponse.statusCode) else {
-            print("Error with the response, unexpected status code: \(String(describing: response))")
-            throw StatusError.error
+        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+            guard let reponse = response as? HTTPURLResponse, (200...299).contains(reponse.statusCode) else {
+                print("Error with the response, unexpected status code: \(String(describing: response))")
+                completion(nil)
+                return
+            }
+            if let data = data {
+                do {
+                    let pokemonDetails = try JSONDecoder().decode(PokemonDetails.self, from: data)
+                    completion(pokemonDetails)
+                } catch {
+                    completion(nil)
+                }
+            } else if let error = error {
+                print("HTTP Request Failed \(error)")
+                completion(nil)
+            }
         }
-
-        let pokemonDetails = try JSONDecoder().decode(PokemonDetails.self, from: data)
-        return pokemonDetails
+        task.resume()
     }
 }
