@@ -39,11 +39,15 @@ struct HomeView: View {
                                 VStack {
                                     ForEach(homeViewModel.pokemonItems, id: \.self) { pokemonItem in
                                         HStack {
+                                            AsyncImage(url: URL(string: pokemonItem.details.sprites.front_default))
+                                                .frame(width: geo.size.width * 0.02, height: geo.size.width * 0.02)
+                                                .padding()
                                             Text(pokemonItem.reference.name)
-                                                .frame(width: geo.size.width * 0.8, height: geo.size.height * 0.1)
-                                                .background(.white)
-                                                .cornerRadius(15)
+                                                .padding()
                                         }
+                                        .frame(width: geo.size.width * 0.8, height: geo.size.height * 0.1)
+                                        .background(.white)
+                                        .cornerRadius(15)
                                         .shadow(radius: 5)
                                     }
                                 }
