@@ -1,5 +1,5 @@
 //
-//  DetailsView.swift
+//  DetailsHeaderView.swift
 //  Pokedex
 //
 //  Created by Cristian Cojocaru on 07/02/24.
@@ -7,25 +7,59 @@
 
 import SwiftUI
 
-struct DetailsView: View {
-    @ObservedObject var detailsViewModel: DetailsViewModel
+struct DetailsHeaderView: View {
+    let geo: GeometryProxy
     
-    var details: PokemonDetails {
-        get {
-            detailsViewModel.pokemonDetails
-        }
-    }
+    let details: PokemonDetails
     
     var body: some View {
-        ZStack {
-            GeometryReader { geo in
-               DetailsHeaderView(geo: geo, details: details)
+        HStack {
+            ZStack {
+                HStack {
+                    Spacer()
+                    AsyncImage(url: URL(string: details.sprites.other.home.front_default)) { image in
+                        image
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: geo.size.width / 2, height: geo.size.height * 0.2)
+                            .padding(.top, geo.size.height * 0.03)
+                            .ignoresSafeArea()
+                            .shadow(color: .red, radius: 5, x: geo.size.width * 0.03, y: geo.size.width * 0.03)
+                            .shadow(color: .blue, radius: 5, x: -geo.size.width * 0.03, y: -geo.size.width * 0.03)
+                            .padding()
+                    } placeholder: {
+                        ProgressView()
+                    }
+                }
+                
+                HStack {
+                    Text(details.name)
+                        .font(.title)
+                        .padding()
+                        .background(.white)
+                        .cornerRadius(15)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 15)
+                                .stroke(.blue, lineWidth: 5)
+                        )
+                }
+                .frame(width: geo.size.width, height: geo.size.height * 0.25, alignment: .bottomLeading)
+                .padding(.leading, geo.size.width * 0.2)
+                .padding(.bottom, geo.size.height * 0.05)
+                   
             }
         }
+        .frame(width: geo.size.width, height: geo.size.height * 0.25)
+        .cornerRadius(36)
+        .overlay(
+            RoundedRectangle(cornerRadius: 36)
+                .stroke(.red, lineWidth: 5)
+        )
+        .ignoresSafeArea()
     }
 }
 
-struct DetailsView_Preview: PreviewProvider {
+struct DetailsHeaderView_Preview: PreviewProvider {
     static var pokemonDetails: PokemonDetails{
         get {
             let abilities: [AbilityWrapper] = [
@@ -65,6 +99,8 @@ struct DetailsView_Preview: PreviewProvider {
     }
     
     static var previews: some View {
-        DetailsView(detailsViewModel: DetailsViewModel(pokemonDetails: pokemonDetails))
+        GeometryReader { geo in
+            DetailsHeaderView(geo: geo, details: pokemonDetails)
+        }
     }
 }
