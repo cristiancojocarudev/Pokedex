@@ -48,6 +48,7 @@ class HomeViewModel: ObservableObject {
     @Published var pokemonItems: [PokemonItem] = []
     
     func populatePokemonItems() {
+        pokemonItemsBuffer = []
         fetchPokemonItem(index: 0)
     }
     

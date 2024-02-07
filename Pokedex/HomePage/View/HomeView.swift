@@ -89,6 +89,9 @@ struct HomeView: View {
         .onChange(of: homeViewModel.searchText) { oldValue, newValue in
             homeViewModel.page = 0
         }
+        .onChange(of: homeViewModel.page) { oldValue, newValue in
+            homeViewModel.populatePokemonItems()
+        }
     }
 }
 
