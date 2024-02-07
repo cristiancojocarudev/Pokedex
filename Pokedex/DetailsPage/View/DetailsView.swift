@@ -156,6 +156,27 @@ struct DetailsView: View {
                             .frame(width: geo.size.width, height: geo.size.height * 0.004)
                             .background(.black)
                             .padding(.vertical)
+                        
+                        Text("Moves")
+                            .font(.title2)
+                            .padding(.horizontal)
+                            .padding(.bottom, geo.size.height * 0.01)
+                            .frame(width: geo.size.width, alignment: .leading)
+                        ScrollView(.horizontal) {
+                            HStack {
+                                ForEach(details.moves, id: \.self) { move in
+                                    Text(move.move.name)
+                                        .padding()
+                                        .background(.black)
+                                        .foregroundStyle(.white)
+                                        .cornerRadius(20)
+                                }
+                            }
+                            .padding(.horizontal)
+                        }
+                        
+                        VStack {}
+                            .frame(height: geo.size.height * 0.1)
                     }
                 }
                 .ignoresSafeArea()

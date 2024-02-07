@@ -68,11 +68,19 @@ struct Game: Decodable {
     var name: String
 }
 
-struct MoveWrapper: Decodable {
+struct MoveWrapper: Decodable, Hashable {
+    static func == (lhs: MoveWrapper, rhs: MoveWrapper) -> Bool {
+        return lhs.move.name == rhs.move.name
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(move)
+    }
+    
     var move: Move
 }
 
-struct Move: Decodable {
+struct Move: Decodable, Hashable {
     var name: String
 }
 
