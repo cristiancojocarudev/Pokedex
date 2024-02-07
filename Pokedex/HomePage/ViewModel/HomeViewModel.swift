@@ -7,8 +7,6 @@
 
 import Foundation
 
-typealias PokemonItem = (reference: PokemonReference, details: PokemonDetails)
-
 class HomeViewModel: ObservableObject {
     
     @Published var searchText: String = ""
@@ -26,7 +24,7 @@ class HomeViewModel: ObservableObject {
         }
     }
     
-    @Published var pokemons: [PokemonReference] = []
+    var pokemons: [PokemonReference] = []
     var pokedex: [PokemonReference: PokemonDetails] = [:]
     
     var filteredPokemons: [PokemonReference] {
@@ -45,24 +43,36 @@ class HomeViewModel: ObservableObject {
             pagePokemons(pokemons: filteredPokemons)
         }
     }
-    /*var filteredAndPaginatedAndDetailedPokemons: [PokemonItem] {
-        get {
-            let references = filteredAndPaginatedPokemons
-            var result = [PokemonItem]()
-            for reference in references {
-                if let details = pokedex[reference] {
-                    result.append(PokemonItem(reference: reference, details: details))
-                } else {
-                    if let pokemonId = reference.id {
-                        Task {
-                            let details = try await HomeNetwork.shared.fetchPokemonDetails(pokemonId: pokemonId)
-                            result.append(PokemonItem(reference: reference, details: details))
-                        }
+    
+    var pokemonItemsBuffer: [PokemonItem] = []
+    @Published var pokemonItems: [PokemonItem] = []
+    
+    func populatePokemonItems() {
+        fetchPokemonItem(index: 0)
+    }
+    
+    func fetchPokemonItem(index: Int) {
+        if index >= pageLimit {
+            DispatchQueue.main.async {
+                self.pokemonItems = self.pokemonItemsBuffer
+            }
+            return
+        }
+        let reference = filteredAndPaginatedPokemons[index]
+        if let details = pokedex[reference] {
+            pokemonItemsBuffer.append(PokemonItem(reference: reference, details: details))
+            fetchPokemonItem(index: index + 1)
+        } else {
+            if let pokemonId = reference.id {
+                HomeNetwork.shared.fetchPokemonDetails(pokemonId: pokemonId) { details in
+                    if let details = details {
+                        self.pokemonItemsBuffer.append(PokemonItem(reference: reference, details: details))
+                        self.fetchPokemonItem(index: index + 1)
                     }
                 }
             }
         }
-    }*/
+    }
     
     func pagePokemons(pokemons: [PokemonReference]) -> [PokemonReference] {
         let minIndex = page * pageLimit
@@ -80,7 +90,8 @@ class HomeViewModel: ObservableObject {
         HomeNetwork.shared.fetchPokemonsReferences(url: HomeNetwork.URLs.pokemonsReferences.rawValue, items: []) { pokemons in
             if let pokemons = pokemons {
                 DispatchQueue.main.async {
-                    self.pokemons = pokemons
+                    self.pokemons = self.pokemonsWithId(pokemons: pokemons)
+                    self.populatePokemonItems()
                 }
             }
         }

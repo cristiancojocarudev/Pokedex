@@ -37,9 +37,9 @@ struct HomeView: View {
                             Spacer()
                             ScrollView {
                                 VStack {
-                                    ForEach(homeViewModel.filteredAndPaginatedPokemons, id: \.self) { pokemon in
+                                    ForEach(homeViewModel.pokemonItems, id: \.self) { pokemonItem in
                                         HStack {
-                                            Text(pokemon.name)
+                                            Text(pokemonItem.reference.name)
                                                 .frame(width: geo.size.width * 0.8, height: geo.size.height * 0.1)
                                                 .background(.white)
                                                 .cornerRadius(15)

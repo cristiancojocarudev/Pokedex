@@ -7,6 +7,19 @@
 
 import Foundation
 
+struct PokemonItem: Hashable {
+    var reference: PokemonReference
+    var details: PokemonDetails
+    
+    static func == (lhs: PokemonItem, rhs: PokemonItem) -> Bool {
+        return lhs.reference.name == rhs.reference.name
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(reference)
+    }
+}
+
 struct PokemonsReferences: Decodable {
     var count: Int
     var next: String?
@@ -21,7 +34,7 @@ struct PokemonReference: Decodable, Hashable {
 }
 
 struct PokemonDetails: Decodable {
-    var abilities: [AbilityWrapper]
+    /*var abilities: [AbilityWrapper]
     var base_experience: Int
     var forms: [Form]
     var game_indices: [GameIndex]
@@ -32,7 +45,7 @@ struct PokemonDetails: Decodable {
     var sprites: SpritesWrapper
     var stats: [StatWrapper]
     var types: [PokeTypeWrapper]
-    var weight: Int
+    var weight: Int*/
 }
 
 struct AbilityWrapper: Decodable {

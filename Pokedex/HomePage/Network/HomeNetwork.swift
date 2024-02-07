@@ -47,6 +47,7 @@ class HomeNetwork {
                         completion(items)
                     }
                 } catch {
+                    print("JSON COnversion error \(error)")
                     completion(nil)
                 }
             } else if let error = error {
@@ -74,6 +75,7 @@ class HomeNetwork {
                     let pokemonDetails = try JSONDecoder().decode(PokemonDetails.self, from: data)
                     completion(pokemonDetails)
                 } catch {
+                    print("JSON COnversion error \(error)")
                     completion(nil)
                 }
             } else if let error = error {
