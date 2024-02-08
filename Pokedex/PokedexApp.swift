@@ -6,9 +6,15 @@
 //
 
 import SwiftUI
+import SDWebImageSVGCoder
 
 @main
 struct PokedexApp: App {
+    
+    init() {
+        SDImageCodersManager.shared.addCoder(SDImageSVGCoder.shared)
+    }
+    
     var body: some Scene {
         WindowGroup {
             HomeView()

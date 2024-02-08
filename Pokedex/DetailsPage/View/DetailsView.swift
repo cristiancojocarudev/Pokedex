@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SDWebImageSwiftUI
 
 struct DetailsView: View {
     @ObservedObject var detailsViewModel: DetailsViewModel
@@ -72,18 +73,14 @@ struct DetailsView: View {
                                     RoundedRectangle(cornerRadius: 36)
                                         .stroke(.black, lineWidth: 5)
                                 )
-                                AsyncImage(url: URL(string: details.sprites.other.dream_world.front_default)) { image in
-                                    image
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(width: geo.size.width / 4, height: geo.size.height * 0.15)
-                                } placeholder: {
-                                    ProgressView()
-                                }
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 36)
-                                        .stroke(.black, lineWidth: 5)
-                                )
+                                WebImage(url: URL(string: details.sprites.other.dream_world.front_default), options: [], context: [.imageThumbnailPixelSize : CGSize.zero])
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: geo.size.width / 4, height: geo.size.height * 0.15)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 36)
+                                            .stroke(.black, lineWidth: 5)
+                                    )
                             }
                             VStack {
                                 AsyncImage(url: URL(string: details.sprites.other.showdown.front_default)) { image in

@@ -16,6 +16,8 @@
 		40458C062B7288550058115C /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40458C052B7288550058115C /* SearchBar.swift */; };
 		40458C0C2B728E8D0058115C /* HomeNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40458C0B2B728E8D0058115C /* HomeNetwork.swift */; };
 		40458C0E2B7290010058115C /* HomeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40458C0D2B7290010058115C /* HomeModel.swift */; };
+		4054BB132B74FCF5008022A3 /* SDWebImageSVGCoder in Frameworks */ = {isa = PBXBuildFile; productRef = 4054BB122B74FCF5008022A3 /* SDWebImageSVGCoder */; };
+		4054BB162B74FDD5008022A3 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 4054BB152B74FDD5008022A3 /* SDWebImageSwiftUI */; };
 		405E49742B73D761006E7CB6 /* DetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 405E49732B73D761006E7CB6 /* DetailsView.swift */; };
 		405E49762B73D7A0006E7CB6 /* DetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 405E49752B73D7A0006E7CB6 /* DetailsViewModel.swift */; };
 		405E49792B73EB87006E7CB6 /* DetailsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 405E49782B73EB87006E7CB6 /* DetailsHeaderView.swift */; };
@@ -42,6 +44,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4054BB162B74FDD5008022A3 /* SDWebImageSwiftUI in Frameworks */,
+				4054BB132B74FCF5008022A3 /* SDWebImageSVGCoder in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -187,6 +191,10 @@
 			dependencies = (
 			);
 			name = Pokedex;
+			packageProductDependencies = (
+				4054BB122B74FCF5008022A3 /* SDWebImageSVGCoder */,
+				4054BB152B74FDD5008022A3 /* SDWebImageSwiftUI */,
+			);
 			productName = Pokedex;
 			productReference = 40458BEF2B72672C0058115C /* Pokedex.app */;
 			productType = "com.apple.product-type.application";
@@ -215,6 +223,10 @@
 				Base,
 			);
 			mainGroup = 40458BE62B72672C0058115C;
+			packageReferences = (
+				4054BB112B74FCF5008022A3 /* XCRemoteSwiftPackageReference "SDWebImageSVGCoder" */,
+				4054BB142B74FDD5008022A3 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
+			);
 			productRefGroup = 40458BF02B72672C0058115C /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -456,6 +468,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		4054BB112B74FCF5008022A3 /* XCRemoteSwiftPackageReference "SDWebImageSVGCoder" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImageSVGCoder.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.7.0;
+			};
+		};
+		4054BB142B74FDD5008022A3 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImageSwiftUI.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.2.6;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		4054BB122B74FCF5008022A3 /* SDWebImageSVGCoder */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4054BB112B74FCF5008022A3 /* XCRemoteSwiftPackageReference "SDWebImageSVGCoder" */;
+			productName = SDWebImageSVGCoder;
+		};
+		4054BB152B74FDD5008022A3 /* SDWebImageSwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4054BB142B74FDD5008022A3 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */;
+			productName = SDWebImageSwiftUI;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 40458BE72B72672C0058115C /* Project object */;
 }
