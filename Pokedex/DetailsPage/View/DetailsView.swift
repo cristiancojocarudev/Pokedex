@@ -143,13 +143,9 @@ struct DetailsView: View {
                             .padding(.vertical)
                         
                         HStack {
-                            VStack {
-                                Text("Forms:")
-                                    .font(.title2)
-                                    .padding(.horizontal)
-                                    .padding(.bottom, geo.size.height * 0.01)
-                                Spacer()
-                            }
+                            Text("Forms:")
+                                .font(.title2)
+                                .padding(.horizontal)
                             VStack {
                                 ForEach(details.forms, id: \.name) { form in
                                     HStack {
@@ -205,13 +201,9 @@ struct DetailsView: View {
                             .padding(.vertical)
                         
                         HStack {
-                            VStack {
-                                Text("Types:")
-                                    .font(.title2)
-                                    .padding(.horizontal)
-                                    .padding(.bottom, geo.size.height * 0.01)
-                                Spacer()
-                            }
+                            Text("Types:")
+                                .font(.title2)
+                                .padding(.horizontal)
                             VStack {
                                 ForEach(details.types, id: \.self) { typeWrapper in
                                     HStack {
