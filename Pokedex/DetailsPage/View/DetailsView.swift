@@ -180,6 +180,29 @@ struct DetailsView: View {
                             .background(.black)
                             .padding(.vertical)
                         
+                        Text("Abilities")
+                            .font(.title2)
+                            .padding(.horizontal)
+                            .padding(.bottom, geo.size.height * 0.01)
+                            .frame(width: geo.size.width, alignment: .leading)
+                        ScrollView(.horizontal) {
+                            HStack {
+                                ForEach(details.abilities, id: \.self) { abilityWrapper in
+                                    Text(abilityWrapper.ability.name)
+                                        .padding()
+                                        .background(.black)
+                                        .foregroundStyle(.white)
+                                        .cornerRadius(20)
+                                }
+                            }
+                            .padding(.horizontal)
+                        }
+                        
+                        HStack {}
+                            .frame(width: geo.size.width, height: geo.size.height * 0.004)
+                            .background(.black)
+                            .padding(.vertical)
+                        
                         HStack {
                             VStack {
                                 Text("Forms:")
@@ -192,6 +215,53 @@ struct DetailsView: View {
                                 ForEach(details.forms, id: \.name) { form in
                                     HStack {
                                         Text(form.name)
+                                        Spacer()
+                                    }
+                                }
+                            }
+                            Spacer()
+                        }
+                        
+                        HStack {}
+                            .frame(width: geo.size.width, height: geo.size.height * 0.004)
+                            .background(.black)
+                            .padding(.vertical)
+                        
+                        Text("Games")
+                            .font(.title2)
+                            .padding(.horizontal)
+                            .padding(.bottom, geo.size.height * 0.01)
+                            .frame(width: geo.size.width, alignment: .leading)
+                        ScrollView(.horizontal) {
+                            HStack {
+                                ForEach(details.game_indices, id: \.self) { gameIndex in
+                                    Text(gameIndex.version.name)
+                                        .padding()
+                                        .background(.black)
+                                        .foregroundStyle(.white)
+                                        .cornerRadius(20)
+                                }
+                            }
+                            .padding(.horizontal)
+                        }
+                        
+                        HStack {}
+                            .frame(width: geo.size.width, height: geo.size.height * 0.004)
+                            .background(.black)
+                            .padding(.vertical)
+                        
+                        HStack {
+                            VStack {
+                                Text("Types:")
+                                    .font(.title2)
+                                    .padding(.horizontal)
+                                    .padding(.bottom, geo.size.height * 0.01)
+                                Spacer()
+                            }
+                            VStack {
+                                ForEach(details.types, id: \.self) { typeWrapper in
+                                    HStack {
+                                        Text(typeWrapper.type.name)
                                         Spacer()
                                     }
                                 }

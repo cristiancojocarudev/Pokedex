@@ -48,11 +48,15 @@ struct PokemonDetails: Decodable {
     var sprites: SpritesWrapper
 }
 
-struct AbilityWrapper: Decodable {
+struct AbilityWrapper: Decodable, Hashable {
+    static func == (lhs: AbilityWrapper, rhs: AbilityWrapper) -> Bool {
+        return lhs.ability.name == rhs.ability.name
+    }
+    
     var ability: Ability
 }
 
-struct Ability: Decodable {
+struct Ability: Decodable, Hashable {
     var name: String
 }
 
@@ -60,11 +64,19 @@ struct Form: Decodable {
     var name: String
 }
 
-struct GameIndex: Decodable {
+struct GameIndex: Decodable, Hashable {
+    static func == (lhs: GameIndex, rhs: GameIndex) -> Bool {
+        return lhs.version.name == rhs.version.name
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(version)
+    }
+    
     var version: Game
 }
 
-struct Game: Decodable {
+struct Game: Decodable, Hashable {
     var name: String
 }
 
@@ -120,10 +132,18 @@ struct Stat: Decodable {
     var name: String
 }
 
-struct PokeTypeWrapper: Decodable {
+struct PokeTypeWrapper: Decodable, Hashable {
+    static func == (lhs: PokeTypeWrapper, rhs: PokeTypeWrapper) -> Bool {
+        return lhs.type.name == rhs.type.name
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(type)
+    }
+    
     var type: PokeType
 }
 
-struct PokeType: Decodable {
+struct PokeType: Decodable, Hashable {
     var name: String
 }
