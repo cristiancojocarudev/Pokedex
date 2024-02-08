@@ -16,6 +16,8 @@ struct DetailsView: View {
         }
     }
     
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    
     var body: some View {
         ZStack {
             
@@ -294,7 +296,29 @@ struct DetailsView: View {
             GeometryReader { geo in
                DetailsHeaderView(geo: geo, details: details)
             }
+            
+            GeometryReader { geo in
+                HStack {
+                    Button {
+                        self.presentationMode.wrappedValue.dismiss()
+                    } label: {
+                        ZStack {
+                            Circle()
+                                .fill(.black)
+                                .frame(width: geo.size.width * 0.07, height: geo.size.width * 0.07)
+                            Image(systemName: "arrow.left")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: geo.size.width * 0.03, height: geo.size.width * 0.03)
+                                .foregroundStyle(.white)
+                                .padding(.horizontal)
+                        }
+                    }
+                    Spacer()
+                }
+            }
         }
+        .navigationBarHidden(true)
     }
 }
 

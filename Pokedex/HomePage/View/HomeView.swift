@@ -92,6 +92,7 @@ struct HomeView: View {
                 }
             }
         }
+        .navigationBarHidden(true)
         .onAppear() {
             homeViewModel.loadData()
         }

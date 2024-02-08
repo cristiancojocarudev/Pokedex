@@ -11,6 +11,8 @@ class HomeViewModel: ObservableObject {
     
     @Published var searchText: String = ""
     
+    @Published var isDetailsShown = false
+    
     let pageLimit = 20
     @Published var page = 0
     var canGoBack: Bool {
