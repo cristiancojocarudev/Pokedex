@@ -175,6 +175,30 @@ struct DetailsView: View {
                             .padding(.horizontal)
                         }
                         
+                        HStack {}
+                            .frame(width: geo.size.width, height: geo.size.height * 0.004)
+                            .background(.black)
+                            .padding(.vertical)
+                        
+                        HStack {
+                            VStack {
+                                Text("Forms:")
+                                    .font(.title2)
+                                    .padding(.horizontal)
+                                    .padding(.bottom, geo.size.height * 0.01)
+                                Spacer()
+                            }
+                            VStack {
+                                ForEach(details.forms, id: \.name) { form in
+                                    HStack {
+                                        Text(form.name)
+                                        Spacer()
+                                    }
+                                }
+                            }
+                            Spacer()
+                        }
+                        
                         VStack {}
                             .frame(height: geo.size.height * 0.1)
                     }
@@ -197,12 +221,11 @@ struct DetailsView_Preview: PreviewProvider {
                 AbilityWrapper(ability: Ability(name: "chlorophyll"))
             ]
             let base_experience: Int = 64
-            let forms: [Form] = [Form(name: "bulbasaur")]
-            let game_indices: [GameIndex] = [
-                GameIndex(version: Game(name: "red")),
-                GameIndex(version: Game(name: "blue")),
-                GameIndex(version: Game(name: "heartgold"))
-            ]
+            let forms: [Form] = [Form(name: "bulbasaur"), Form(name: "bulbasaur2"), Form(name: "bulbasaur3")]
+            var game_indices: [GameIndex] = []
+            for _ in 0...85 {
+                game_indices.append(GameIndex(version: Game(name: "green")))
+            }
             let height: Int = 7
             var moves: [MoveWrapper] = []
             for _ in 0...85 {

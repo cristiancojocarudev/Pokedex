@@ -67,12 +67,11 @@ struct DetailsHeaderView_Preview: PreviewProvider {
                 AbilityWrapper(ability: Ability(name: "chlorophyll"))
             ]
             let base_experience: Int = 64
-            let forms: [Form] = [Form(name: "bulbasaur")]
-            let game_indices: [GameIndex] = [
-                GameIndex(version: Game(name: "red")),
-                GameIndex(version: Game(name: "blue")),
-                GameIndex(version: Game(name: "heartgold"))
-            ]
+            let forms: [Form] = [Form(name: "bulbasaur"), Form(name: "bulbasaur2"), Form(name: "bulbasaur3")]
+            var game_indices: [GameIndex] = []
+            for _ in 0...85 {
+                game_indices.append(GameIndex(version: Game(name: "green")))
+            }
             let height: Int = 7
             var moves: [MoveWrapper] = []
             for _ in 0...85 {
