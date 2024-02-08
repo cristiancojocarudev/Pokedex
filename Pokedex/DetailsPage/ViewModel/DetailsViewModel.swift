@@ -16,6 +16,8 @@ struct PokeStat: Hashable {
 class DetailsViewModel: ObservableObject {
     var pokemonDetails: PokemonDetails
     
+    var imagesGallery: [[URL?]] = []
+    
     var mainStatsTable: [[PokeStat]] = []
     
     var gameColor: [String: (background: Color, foreground: Color)] = [
@@ -34,7 +36,23 @@ class DetailsViewModel: ObservableObject {
     
     init(pokemonDetails: PokemonDetails) {
         self.pokemonDetails = pokemonDetails
+        populateImagesGallery()
         populateMainStatsTable()
+    }
+    
+    private func populateImagesGallery() {
+        imagesGallery.append([
+            URL(string: pokemonDetails.sprites.front_default), 
+            URL(string: pokemonDetails.sprites.back_default),
+        ])
+        imagesGallery.append([
+            URL(string: pokemonDetails.sprites.other.home.front_default),
+            URL(string: pokemonDetails.sprites.other.dream_world.front_default),
+        ])
+        imagesGallery.append([
+            URL(string: pokemonDetails.sprites.other.showdown.front_default),
+            URL(string: pokemonDetails.sprites.other.showdown.back_default),
+        ])
     }
     
     private func populateMainStatsTable() {

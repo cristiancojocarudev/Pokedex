@@ -32,82 +32,22 @@ struct DetailsView: View {
                             .padding()
                             .frame(width: geo.size.width, alignment: .leading)
                         HStack {
-                            VStack {
-                                AsyncImage(url: URL(string: details.sprites.front_default)) { image in
-                                    image
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(width: geo.size.width / 4, height: geo.size.height * 0.15)
-                                } placeholder: {
-                                    ProgressView()
+                            ForEach(detailsViewModel.imagesGallery, id: \.self) { urlCouple in
+                                VStack {
+                                    ForEach(urlCouple, id: \.self) { url in
+                                        if let url = url {
+                                            WebImage(url: url, options: [], context: [.imageThumbnailPixelSize : CGSize.zero])
+                                                .placeholder {ProgressView()}
+                                                .resizable()
+                                                .scaledToFit()
+                                                .frame(width: geo.size.width / 4, height: geo.size.height * 0.15)
+                                                .overlay(
+                                                    RoundedRectangle(cornerRadius: 36)
+                                                        .stroke(.black, lineWidth: 5)
+                                                )
+                                        }
+                                    }
                                 }
-                                .cornerRadius(15)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 36)
-                                        .stroke(.black, lineWidth: 5)
-                                )
-                                AsyncImage(url: URL(string: details.sprites.back_default)) { image in
-                                    image
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(width: geo.size.width / 4, height: geo.size.height * 0.15)
-                                } placeholder: {
-                                    ProgressView()
-                                }
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 36)
-                                        .stroke(.black, lineWidth: 5)
-                                )
-                            }
-                            VStack {
-                                AsyncImage(url: URL(string: details.sprites.other.home.front_default)) { image in
-                                    image
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(width: geo.size.width / 4, height: geo.size.height * 0.15)
-                                } placeholder: {
-                                    ProgressView()
-                                }
-                                .cornerRadius(15)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 36)
-                                        .stroke(.black, lineWidth: 5)
-                                )
-                                WebImage(url: URL(string: details.sprites.other.dream_world.front_default), options: [], context: [.imageThumbnailPixelSize : CGSize.zero])
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: geo.size.width / 4, height: geo.size.height * 0.15)
-                                    .overlay(
-                                        RoundedRectangle(cornerRadius: 36)
-                                            .stroke(.black, lineWidth: 5)
-                                    )
-                            }
-                            VStack {
-                                AsyncImage(url: URL(string: details.sprites.other.showdown.front_default)) { image in
-                                    image
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(width: geo.size.width / 4, height: geo.size.height * 0.15)
-                                } placeholder: {
-                                    ProgressView()
-                                }
-                                .cornerRadius(15)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 36)
-                                        .stroke(.black, lineWidth: 5)
-                                )
-                                AsyncImage(url: URL(string: details.sprites.other.showdown.back_default)) { image in
-                                    image
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(width: geo.size.width / 4, height: geo.size.height * 0.15)
-                                } placeholder: {
-                                    ProgressView()
-                                }
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 36)
-                                        .stroke(.black, lineWidth: 5)
-                                )
                             }
                         }
                         
