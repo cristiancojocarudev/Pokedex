@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 struct PokeStat: Hashable {
     var name: String
@@ -16,6 +17,20 @@ class DetailsViewModel: ObservableObject {
     var pokemonDetails: PokemonDetails
     
     var mainStatsTable: [[PokeStat]] = []
+    
+    var gameColor: [String: (background: Color, foreground: Color)] = [
+        "green": (.green, .black),
+        "red": (.red, .black),
+        "blue": (.blue, .white),
+        "yellow": (.yellow, .black),
+        "gold": (Color(red: 207 / 255, green: 181 / 255, blue: 57 / 255), .black),
+        "silver": (Color(red: 192 / 255, green: 192 / 255, blue: 192 / 255), .black),
+        "crystal": (Color(red: 167 / 255, green: 216 / 255, blue: 222 / 255), .black),
+        "ruby": (Color(red: 155 / 255, green: 17 / 255, blue: 30 / 255), .white),
+        "sapphire": (.blue, .black),
+        "emerald": (.green, .black),
+        "white": (.white, .black)
+    ]
     
     init(pokemonDetails: PokemonDetails) {
         self.pokemonDetails = pokemonDetails
@@ -40,5 +55,14 @@ class DetailsViewModel: ObservableObject {
                 rowBuffer = []
             }
         }
+    }
+    
+    func getGameColor(game: String) -> (background: Color, foreground: Color) {
+        for key in gameColor.keys {
+            if game.contains(key) {
+                return gameColor[key]!
+            }
+        }
+        return (Color.black, Color.white)
     }
 }

@@ -235,13 +235,28 @@ struct DetailsView: View {
                         ScrollView(.horizontal) {
                             HStack {
                                 ForEach(details.game_indices, id: \.self) { gameIndex in
-                                    Text(gameIndex.version.name)
-                                        .padding()
-                                        .background(.black)
-                                        .foregroundStyle(.white)
-                                        .cornerRadius(20)
+                                    let game = gameIndex.version.name
+                                    let gameColor = detailsViewModel.getGameColor(game: game)
+                                    if gameColor.background != .white {
+                                        Text(game)
+                                            .padding()
+                                            .background(gameColor.background)
+                                            .foregroundStyle(gameColor.foreground)
+                                            .cornerRadius(20)
+                                    } else {
+                                        Text(game)
+                                            .padding()
+                                            .background(gameColor.background)
+                                            .foregroundStyle(gameColor.foreground)
+                                            .cornerRadius(20)
+                                            .overlay {
+                                                RoundedRectangle(cornerRadius: 20)
+                                                    .stroke(.black, lineWidth: 2)
+                                            }
+                                    }
                                 }
                             }
+                            .frame(height: geo.size.height * 0.1)
                             .padding(.horizontal)
                         }
                         
