@@ -55,9 +55,11 @@ struct HomeView: View {
                                                 DetailsView(detailsViewModel: detailsViewModel)
                                             } label: {
                                                 HStack {
-                                                    AsyncImage(url: URL(string: pokemonItem.details.sprites.front_default))
-                                                        .frame(width: geo.size.width * 0.02, height: geo.size.width * 0.02)
-                                                        .padding()
+                                                    if let image = pokemonItem.details.sprites.front_default {
+                                                        AsyncImage(url: URL(string: image))
+                                                            .frame(width: geo.size.width * 0.02, height: geo.size.width * 0.02)
+                                                            .padding()
+                                                    }
                                                     Text(pokemonItem.reference.name)
                                                         .padding()
                                                 }
@@ -85,7 +87,7 @@ struct HomeView: View {
                                     }
                                 }
                             Spacer()
-                            Text("Page \(homeViewModel.page + 1) of \(homeViewModel.maxPage + 1)")
+                            Text("Page \(homeViewModel.filteredAndPaginatedPokemons.count > 0 ? homeViewModel.page + 1 : 0) of \(homeViewModel.maxPage + 1)")
                             Spacer()
                             Image(systemName: "arrow.right")
                                 .padding()
@@ -98,7 +100,7 @@ struct HomeView: View {
                             Spacer()
                         }
                         .ignoresSafeArea()
-                        .frame(width: geo.size.width * 0.6, height: geo.size.height * 0.1)
+                        .frame(width: geo.size.width * 0.65, height: geo.size.height * 0.1)
                         .background(.white)
                         .cornerRadius(15)
                     }
@@ -112,8 +114,6 @@ struct HomeView: View {
         }
         .onChange(of: homeViewModel.searchText) { oldValue, newValue in
             homeViewModel.page = 0
-        }
-        .onChange(of: homeViewModel.page) { oldValue, newValue in
             homeViewModel.populatePokemonItems()
         }
     }

@@ -17,18 +17,20 @@ struct DetailsHeaderView: View {
             ZStack {
                 HStack {
                     Spacer()
-                    AsyncImage(url: URL(string: details.sprites.other.home.front_default)) { image in
-                        image
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: geo.size.width / 2, height: geo.size.height * 0.2)
-                            .padding(.top, geo.size.height * 0.03)
-                            .ignoresSafeArea()
-                            .shadow(color: .red, radius: 5, x: geo.size.width * 0.03, y: geo.size.width * 0.03)
-                            .shadow(color: .blue, radius: 5, x: -geo.size.width * 0.03, y: -geo.size.width * 0.03)
-                            .padding()
-                    } placeholder: {
-                        ProgressView()
+                    if let profileImage = details.sprites.other.home.front_default {
+                        AsyncImage(url: URL(string: profileImage)) { image in
+                            image
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: geo.size.width / 2, height: geo.size.height * 0.2)
+                                .padding(.top, geo.size.height * 0.03)
+                                .ignoresSafeArea()
+                                .shadow(color: .red, radius: 5, x: geo.size.width * 0.03, y: geo.size.width * 0.03)
+                                .shadow(color: .blue, radius: 5, x: -geo.size.width * 0.03, y: -geo.size.width * 0.03)
+                                .padding()
+                        } placeholder: {
+                            ProgressView()
+                        }
                     }
                 }
                 

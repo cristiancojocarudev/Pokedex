@@ -42,35 +42,41 @@ class DetailsViewModel: ObservableObject {
     
     private func populateImagesGallery() {
         imagesGallery.append([
-            URL(string: pokemonDetails.sprites.front_default), 
-            URL(string: pokemonDetails.sprites.back_default),
+            URL(string: pokemonDetails.sprites.front_default ?? ""),
+            URL(string: pokemonDetails.sprites.back_default ?? ""),
         ])
         imagesGallery.append([
-            URL(string: pokemonDetails.sprites.other.home.front_default),
-            URL(string: pokemonDetails.sprites.other.dream_world.front_default),
+            URL(string: pokemonDetails.sprites.other.home.front_default ?? ""),
+            URL(string: pokemonDetails.sprites.other.dream_world.front_default ?? ""),
         ])
         imagesGallery.append([
-            URL(string: pokemonDetails.sprites.other.showdown.front_default),
-            URL(string: pokemonDetails.sprites.other.showdown.back_default),
+            URL(string: pokemonDetails.sprites.other.showdown.front_default ?? ""),
+            URL(string: pokemonDetails.sprites.other.showdown.back_default ?? ""),
         ])
     }
     
     private func populateMainStatsTable() {
         let rowLength = 3
-        mainStatsTable.append([
-            PokeStat(name: "height", value: pokemonDetails.height),
-            PokeStat(name: "weight", value: pokemonDetails.weight),
-            PokeStat(name: "base experience", value: pokemonDetails.base_experience)
-        ])
+        mainStatsTable.append([])
+        if let height = pokemonDetails.height {
+            mainStatsTable[0].append(PokeStat(name: "height", value: height))
+        }
+        if let weight = pokemonDetails.height {
+            mainStatsTable[0].append(PokeStat(name: "weight", value: weight))
+        }
+        if let baseExperienceht = pokemonDetails.height {
+            mainStatsTable[0].append(PokeStat(name: "base experience", value: baseExperienceht))
+        }
         var rowBuffer: [PokeStat] = []
         for stat in pokemonDetails.stats {
             let value = stat.base_stat
-            let name = stat.stat.name
-            let pokeStat = PokeStat(name: name, value: value)
-            rowBuffer.append(pokeStat)
-            if rowBuffer.count == rowLength {
-                mainStatsTable.append(rowBuffer)
-                rowBuffer = []
+            if let name = stat.stat.name {
+                let pokeStat = PokeStat(name: name, value: value)
+                rowBuffer.append(pokeStat)
+                if rowBuffer.count == rowLength {
+                    mainStatsTable.append(rowBuffer)
+                    rowBuffer = []
+                }
             }
         }
     }

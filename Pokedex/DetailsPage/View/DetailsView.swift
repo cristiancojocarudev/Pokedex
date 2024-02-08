@@ -77,18 +77,19 @@ struct DetailsView: View {
                             }
                         }
                         
-                        
-                        HStack {}
-                            .frame(width: geo.size.width, height: geo.size.height * 0.004)
-                            .background(.black)
-                            .padding(.vertical)
-                        
-                        HStack {
-                            Text("Specie:")
-                                .font(.title2)
-                                .padding(.horizontal)
-                            Text(details.species.name)
-                            Spacer()
+                        if let specie = details.species.name {
+                            HStack {}
+                                .frame(width: geo.size.width, height: geo.size.height * 0.004)
+                                .background(.black)
+                                .padding(.vertical)
+                            
+                            HStack {
+                                Text("Specie:")
+                                    .font(.title2)
+                                    .padding(.horizontal)
+                                Text(specie)
+                                Spacer()
+                            }
                         }
                         
                         HStack {}

@@ -47,7 +47,7 @@ class HomeNetwork {
                         completion(items)
                     }
                 } catch {
-                    print("JSON COnversion error \(error)")
+                    print("JSON Conversion error \(error) \(url)")
                     completion(nil)
                 }
             } else if let error = error {
@@ -58,8 +58,8 @@ class HomeNetwork {
         task.resume()
     }
     
-    func fetchPokemonDetails(pokemonId: Int, completion: @escaping (PokemonDetails?) -> Void) {
-        let url = URLs.pokemonDetails.rawValue + String(pokemonId)
+    func fetchPokemonDetails(pokemonName: String, completion: @escaping (PokemonDetails?) -> Void) {
+        let url = URLs.pokemonDetails.rawValue + pokemonName
         guard let url = URL(string: url) else {
             fatalError("Cannot build URL")
         }
@@ -75,7 +75,7 @@ class HomeNetwork {
                     let pokemonDetails = try JSONDecoder().decode(PokemonDetails.self, from: data)
                     completion(pokemonDetails)
                 } catch {
-                    print("JSON COnversion error \(error)")
+                    print("JSON Conversion error \(error) \(url)")
                     completion(nil)
                 }
             } else if let error = error {
