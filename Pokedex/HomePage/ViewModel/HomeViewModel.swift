@@ -30,7 +30,7 @@ class HomeViewModel: ObservableObject {
     }
     var canGoForward: Bool {
         get {
-            page <= maxPage
+            page < maxPage
         }
     }
     
@@ -57,15 +57,19 @@ class HomeViewModel: ObservableObject {
     @Published var pokemonItems: [PokemonItem] = []
     
     func populatePokemonItems() {
-        isLoading = true
-        loadingId += 1
-        fetchPokemonItem(index: 0, loadingId: loadingId, pokemonItemsBuffer: [])
+        self.isLoading = true
+        fetchPokemonItem(index: 0, loadingId: nil, pokemonItemsBuffer: [])
     }
     
-    func fetchPokemonItem(index: Int, loadingId: Int, pokemonItemsBuffer: [PokemonItem]) {
+    func fetchPokemonItem(index: Int, loadingId: Int?, pokemonItemsBuffer: [PokemonItem]) {
         loadingQueue.async {
             self.loadingSemaphore.wait()
-            if loadingId < self.loadingId {
+            var loadingId = loadingId
+            if loadingId == nil {
+                self.loadingId += 1
+                loadingId = self.loadingId
+            }
+            if loadingId! < self.loadingId {
                 self.loadingSemaphore.signal()
                 return
             }
