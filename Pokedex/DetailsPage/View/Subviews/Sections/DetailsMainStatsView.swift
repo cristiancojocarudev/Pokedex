@@ -10,7 +10,7 @@ import SwiftUI
 struct DetailsMainStatsView: View {
     let geo: GeometryProxy
     
-    @State var mainStatsTable: [[PokeStat]]
+    var mainStatsTable: [[PokeStat]]
     
     var body: some View {
         Text("Main Stats")

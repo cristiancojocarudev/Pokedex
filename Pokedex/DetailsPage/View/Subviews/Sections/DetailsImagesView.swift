@@ -11,7 +11,7 @@ import SDWebImageSwiftUI
 struct DetailsImagesView: View {
     let geo: GeometryProxy
     
-    @State var imagesGallery: [[URL?]]
+    var imagesGallery: [[URL?]]
     
     var body: some View {
         Text("Images")

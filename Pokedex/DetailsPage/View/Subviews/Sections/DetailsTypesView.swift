@@ -10,7 +10,7 @@ import SwiftUI
 struct DetailsTypesView: View {
     let geo: GeometryProxy
     
-    @State var types: [PokeTypeWrapper]
+    var types: [PokeTypeWrapper]
     
     var body: some View {
         VerticalListSection(geo: geo, title: "Types", data: types.map({$0.type.name}))

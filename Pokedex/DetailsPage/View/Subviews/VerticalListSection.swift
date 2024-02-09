@@ -10,8 +10,8 @@ import SwiftUI
 struct VerticalListSection: View {
     let geo: GeometryProxy
     
-    @State var title: String
-    @State var data: [String]
+    var title: String
+    var data: [String]
     
     var body: some View {
         HStack {

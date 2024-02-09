@@ -50,39 +50,7 @@ struct HomeView: View {
                                 ScrollView {
                                     VStack {
                                         ForEach(homeViewModel.pokemonItems, id: \.self) { pokemonItem in
-                                            NavigationLink {
-                                                let detailsViewModel = DetailsViewModel(pokemonDetails: pokemonItem.details)
-                                                DetailsView(detailsViewModel: detailsViewModel)
-                                            } label: {
-                                                HStack {
-                                                    ZStack {
-                                                        HStack {
-                                                            if let imageUrl = pokemonItem.details.sprites.front_default {
-                                                                AsyncImage(url: URL(string: imageUrl)) { image in
-                                                                    image
-                                                                        .resizable()
-                                                                        .scaledToFit()
-                                                                        .frame(width: geo.size.width * 0.25, height: geo.size.width * 0.25)
-                                                                        .padding(.leading)
-                                                                } placeholder: {
-                                                                    ProgressView()
-                                                                }
-                                                            }
-                                                            Spacer()
-                                                        }
-                                                        HStack {
-                                                            Spacer()
-                                                            Text(pokemonItem.reference.name)
-                                                                .padding(.leading, geo.size.width * 0.07)
-                                                            Spacer()
-                                                        }
-                                                    }
-                                                }
-                                                .frame(width: geo.size.width * 0.8, height: geo.size.height * 0.1)
-                                                .background(.white)
-                                                .cornerRadius(15)
-                                                .shadow(radius: 5)
-                                            }
+                                            PokemonCellView(geo: geo, pokemonItem: pokemonItem)
                                         }
                                     }
                                 }
@@ -91,33 +59,7 @@ struct HomeView: View {
                             Spacer()
                         }
                         
-                        HStack {
-                            Spacer()
-                            Image(systemName: "arrow.left")
-                                .padding()
-                                .foregroundStyle(homeViewModel.canGoBack ? .black : Color(red: 200 / 255, green: 200 / 255, blue: 200 / 255))
-                                .onTapGesture {
-                                    if homeViewModel.canGoBack {
-                                        homeViewModel.goBack()
-                                    }
-                                }
-                            Spacer()
-                            Text("Page \(homeViewModel.maxPage + 1 > 0 ? homeViewModel.page + 1 : 0) of \(homeViewModel.maxPage + 1)")
-                            Spacer()
-                            Image(systemName: "arrow.right")
-                                .padding()
-                                .foregroundStyle(homeViewModel.canGoForward ? .black : Color(red: 200 / 255, green: 200 / 255, blue: 200 / 255))
-                                .onTapGesture {
-                                    if homeViewModel.canGoForward {
-                                        homeViewModel.goForward()
-                                    }
-                                }
-                            Spacer()
-                        }
-                        .ignoresSafeArea()
-                        .frame(width: geo.size.width * 0.65, height: geo.size.height * 0.1)
-                        .background(.white)
-                        .cornerRadius(15)
+                        PageHandlerView(geo: geo, page: homeViewModel.page, maxPage: homeViewModel.maxPage, canGoBack: homeViewModel.canGoBack, canGoForward: homeViewModel.canGoForward, goBack: homeViewModel.goBack, goForward: homeViewModel.goForward)
                     }
                     .padding()
                 }

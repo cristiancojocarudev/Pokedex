@@ -10,7 +10,7 @@ import SwiftUI
 struct DetailsSpecieView: View {
     let geo: GeometryProxy
     
-    @State var specie: String?
+    var specie: String?
     
     var body: some View {
         HStack {

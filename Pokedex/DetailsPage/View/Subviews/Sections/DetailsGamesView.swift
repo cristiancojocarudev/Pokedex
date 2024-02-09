@@ -10,7 +10,7 @@ import SwiftUI
 struct DetailsGamesView: View {
     let geo: GeometryProxy
     
-    @State var coloredGameIndices: [ColoredGameIndex]
+    var coloredGameIndices: [ColoredGameIndex]
     
     var body: some View {
         Text("Games")
