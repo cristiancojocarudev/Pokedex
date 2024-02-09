@@ -11,12 +11,6 @@ import SDWebImageSwiftUI
 struct DetailsView: View {
     @ObservedObject var detailsViewModel: DetailsViewModel
     
-    var details: PokemonDetails {
-        get {
-            detailsViewModel.pokemonDetails
-        }
-    }
-    
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     var body: some View {
@@ -77,7 +71,7 @@ struct DetailsView: View {
                             }
                         }
                         
-                        if let specie = details.species.name {
+                        if let specie = detailsViewModel.pokemonDetails.species.name {
                             HStack {}
                                 .frame(width: geo.size.width, height: geo.size.height * 0.004)
                                 .background(.black)
@@ -104,7 +98,7 @@ struct DetailsView: View {
                             .frame(width: geo.size.width, alignment: .leading)
                         ScrollView(.horizontal) {
                             HStack {
-                                ForEach(details.moves, id: \.self) { move in
+                                ForEach(detailsViewModel.pokemonDetails.moves, id: \.self) { move in
                                     Text(move.move.name)
                                         .padding()
                                         .background(.black)
@@ -127,7 +121,7 @@ struct DetailsView: View {
                             .frame(width: geo.size.width, alignment: .leading)
                         ScrollView(.horizontal) {
                             HStack {
-                                ForEach(details.abilities, id: \.self) { abilityWrapper in
+                                ForEach(detailsViewModel.pokemonDetails.abilities, id: \.self) { abilityWrapper in
                                     Text(abilityWrapper.ability.name)
                                         .padding()
                                         .background(.black)
@@ -148,7 +142,7 @@ struct DetailsView: View {
                                 .font(.title2)
                                 .padding(.horizontal)
                             VStack {
-                                ForEach(details.forms, id: \.name) { form in
+                                ForEach(detailsViewModel.pokemonDetails.forms, id: \.name) { form in
                                     HStack {
                                         Text(form.name)
                                         Spacer()
@@ -170,7 +164,7 @@ struct DetailsView: View {
                             .frame(width: geo.size.width, alignment: .leading)
                         ScrollView(.horizontal) {
                             HStack {
-                                ForEach(details.game_indices, id: \.self) { gameIndex in
+                                ForEach(detailsViewModel.pokemonDetails.game_indices, id: \.self) { gameIndex in
                                     let game = gameIndex.version.name
                                     let gameColor = detailsViewModel.getGameColor(game: game)
                                     if gameColor.background != .white {
@@ -206,7 +200,7 @@ struct DetailsView: View {
                                 .font(.title2)
                                 .padding(.horizontal)
                             VStack {
-                                ForEach(details.types, id: \.self) { typeWrapper in
+                                ForEach(detailsViewModel.pokemonDetails.types, id: \.self) { typeWrapper in
                                     HStack {
                                         Text(typeWrapper.type.name)
                                         Spacer()
@@ -224,7 +218,7 @@ struct DetailsView: View {
             }
             
             GeometryReader { geo in
-               DetailsHeaderView(geo: geo, details: details)
+                DetailsHeaderView(geo: geo, details: detailsViewModel.pokemonDetails)
             }
             
             GeometryReader { geo in

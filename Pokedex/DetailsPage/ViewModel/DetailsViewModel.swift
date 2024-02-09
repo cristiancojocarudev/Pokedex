@@ -14,7 +14,7 @@ struct PokeStat: Hashable {
 }
 
 class DetailsViewModel: ObservableObject {
-    var pokemonDetails: PokemonDetails
+    @Published var pokemonDetails: PokemonDetails
     
     var imagesGallery: [[URL?]] = []
     

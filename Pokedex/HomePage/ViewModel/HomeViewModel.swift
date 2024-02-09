@@ -18,15 +18,37 @@ class HomeViewModel: ObservableObject {
     
     @Published var page = 0
     var pageLimit = 20
-    var maxPage: Int = 0
+    var maxPage: Int = -1
     var canGoBack: Bool = false
     var canGoForward: Bool = false
     
     @Published var pokemonItems: [PokemonItem] = []
     var pokedex: [PokemonReference: PokemonDetails] = [:]
     var pokemons: [PokemonReference] = []
-    var filteredPokemons: [PokemonReference] = []
-    var paginatedPokemons: [PokemonReference] = []
+    var filteredPokemons: [PokemonReference] {
+        get {
+            if searchText.isEmpty {
+                return pokemons
+            }
+            let filtered = pokemons.filter() {
+                $0.name.lowercased().contains(searchText.lowercased())
+            }
+            return filtered
+        }
+    }
+    var filteredAndpaginatedPokemons: [PokemonReference] {
+        get {
+            let minIndex = page * pageLimit
+            let maxIndex = minIndex + pageLimit - 1
+            var paged = [PokemonReference]()
+            for i in minIndex...maxIndex {
+                if i <= filteredPokemons.count - 1 {
+                    paged.append(filteredPokemons[i])
+                }
+            }
+            return paged
+        }
+    }
     
     func loadData() {
         HomeNetwork.shared.fetchPokemonsReferences(url: HomeNetwork.URLs.pokemonsReferences.rawValue, items: []) { pokemons in
@@ -39,52 +61,26 @@ class HomeViewModel: ObservableObject {
         }
     }
     
-    func populateFilteredPokemons() -> [PokemonReference] {
-        if searchText.isEmpty {
-            return pokemons
-        }
-        let filtered = pokemons.filter() {
-            $0.name.lowercased().contains(searchText.lowercased())
-        }
-        return filtered
-    }
-    
-    func populatePagedPokemons() -> [PokemonReference] {
-        return pagePokemons(pokemons: filteredPokemons)
-    }
-    
-    func pagePokemons(pokemons: [PokemonReference]) -> [PokemonReference] {
-        let minIndex = page * pageLimit
-        let maxIndex = minIndex + pageLimit - 1
-        var paged = [PokemonReference]()
-        for i in minIndex...maxIndex {
-            if i <= pokemons.count - 1 {
-                paged.append(pokemons[i])
-            }
-        }
-        return paged
-    }
-    
     func populatePokemonItems() {
         self.isLoading = true
-        fetchPokemonItem(index: 0, loadingId: nil, pokemonItemsBuffer: [])
+        fetchPokemonItem(index: 0)
     }
     
-    func computePokemonsFilteringAndPaging() {
-        filteredPokemons = populateFilteredPokemons()
-        paginatedPokemons = populatePagedPokemons()
+    func computePokemonsFilteringAndPaging() -> [PokemonReference] {
         maxPage = computeMaxPage()
         canGoBack = computeCanGoBack()
         canGoForward = computeCanGoForward()
+        return filteredAndpaginatedPokemons
     }
     
-    func fetchPokemonItem(index: Int, loadingId: Int?, pokemonItemsBuffer: [PokemonItem]) {
+    func fetchPokemonItem(index: Int, loadingId: Int? = nil, pokemonItemsBuffer: [PokemonItem] = [], filteredAndpaginatedPokemons: [PokemonReference] = []) {
         loadingQueue.async {
             self.loadingSemaphore.wait()
             var loadingId = loadingId
+            var filteredAndpaginatedPokemons = filteredAndpaginatedPokemons
             if loadingId == nil {
                 self.loadingId += 1
-                self.computePokemonsFilteringAndPaging()
+                filteredAndpaginatedPokemons = self.computePokemonsFilteringAndPaging()
                 loadingId = self.loadingId
             }
             if loadingId! < self.loadingId {
@@ -92,7 +88,7 @@ class HomeViewModel: ObservableObject {
                 return
             }
             var pokemonItemsBuffer = pokemonItemsBuffer
-            if index >= self.paginatedPokemons.count {
+            if index >= filteredAndpaginatedPokemons.count {
                 DispatchQueue.main.async {
                     self.loadingSemaphore.signal()
                     self.pokemonItems = pokemonItemsBuffer
@@ -100,18 +96,18 @@ class HomeViewModel: ObservableObject {
                 }
                 return
             }
-            let reference = self.paginatedPokemons[index]
+            let reference = filteredAndpaginatedPokemons[index]
             if let details = self.pokedex[reference] {
                 pokemonItemsBuffer.append(PokemonItem(reference: reference, details: details))
                 self.loadingSemaphore.signal()
-                self.fetchPokemonItem(index: index + 1, loadingId: loadingId, pokemonItemsBuffer: pokemonItemsBuffer)
+                self.fetchPokemonItem(index: index + 1, loadingId: loadingId, pokemonItemsBuffer: pokemonItemsBuffer, filteredAndpaginatedPokemons: filteredAndpaginatedPokemons)
             } else {
                 HomeNetwork.shared.fetchPokemonDetails(pokemonName: reference.name) { details in
                     if let details = details {
                         pokemonItemsBuffer.append(PokemonItem(reference: reference, details: details))
                         self.pokedex[reference] = details
                         self.loadingSemaphore.signal()
-                        self.fetchPokemonItem(index: index + 1, loadingId: loadingId, pokemonItemsBuffer: pokemonItemsBuffer)
+                        self.fetchPokemonItem(index: index + 1, loadingId: loadingId, pokemonItemsBuffer: pokemonItemsBuffer, filteredAndpaginatedPokemons: filteredAndpaginatedPokemons)
                     }
                 }
             }
