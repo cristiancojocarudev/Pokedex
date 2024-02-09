@@ -35,6 +35,11 @@ struct DetailsImagesView: View {
                                         .stroke(.black, lineWidth: 5)
                                 )
                         }
+                        let emptyViewsCounter = Array((0..<(3 - urls.count)))
+                        ForEach(emptyViewsCounter, id: \.self) { _ in
+                            VStack {}
+                                .frame(width: geo.size.width / 4, height: geo.size.height * 0.15)
+                        }
                     }
                 }
             }

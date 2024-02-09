@@ -26,9 +26,15 @@ struct DetailsMainStatsView: View {
                             Text(pokeStat.name)
                             Text(String(pokeStat.value))
                         }
-                        .frame(width: geo.size.width * 0.22, height: geo.size.width * 0.2 * 1)
+                        .frame(width: geo.size.width * 0.22, height: geo.size.width * 0.2)
                         .multilineTextAlignment(.center)
                         .padding(.horizontal)
+                    }
+                    let emptyViewsCounter = Array((0..<(3 - row.count)))
+                    ForEach(emptyViewsCounter, id: \.self) { _ in
+                        VStack {}
+                            .frame(width: geo.size.width * 0.22, height: geo.size.width * 0.2)
+                            .padding(.horizontal)
                     }
                 }
             }
