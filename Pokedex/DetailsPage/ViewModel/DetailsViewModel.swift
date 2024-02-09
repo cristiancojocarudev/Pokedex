@@ -13,6 +13,21 @@ struct PokeStat: Hashable {
     var value: Int
 }
 
+struct ColoredGameIndex: Hashable {
+    var gameIndex: GameIndex
+    var coloration: Coloration
+    
+    static func == (lhs: ColoredGameIndex, rhs: ColoredGameIndex) -> Bool {
+        return lhs.gameIndex.version.name == rhs.gameIndex.version.name
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(gameIndex)
+    }
+}
+
+typealias Coloration = (background: Color, foreground: Color)
+
 class DetailsViewModel: ObservableObject {
     @Published var pokemonDetails: PokemonDetails
     
@@ -20,7 +35,7 @@ class DetailsViewModel: ObservableObject {
     
     var mainStatsTable: [[PokeStat]] = []
     
-    var gameColor: [String: (background: Color, foreground: Color)] = [
+    var gameColor: [String: Coloration] = [
         "green": (.green, .black),
         "red": (.red, .black),
         "blue": (.blue, .white),
@@ -81,12 +96,16 @@ class DetailsViewModel: ObservableObject {
         }
     }
     
-    func getGameColor(game: String) -> (background: Color, foreground: Color) {
+    func getGameColor(game: String) -> Coloration {
         for key in gameColor.keys {
             if game.contains(key) {
                 return gameColor[key]!
             }
         }
         return (Color.black, Color.white)
+    }
+    
+    func getColoredGameIndices() -> [ColoredGameIndex] {
+        return pokemonDetails.game_indices.map({ColoredGameIndex(gameIndex: $0, coloration: getGameColor(game: $0.version.name))})
     }
 }

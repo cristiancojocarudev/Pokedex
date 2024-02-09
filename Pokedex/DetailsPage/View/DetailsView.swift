@@ -21,194 +21,36 @@ struct DetailsView: View {
                     ScrollView {
                         VStack {}
                             .frame(height: geo.size.height * 0.25)
-                        Text("Images")
-                            .font(.title2)
-                            .padding()
-                            .frame(width: geo.size.width, alignment: .leading)
-                        HStack {
-                            ForEach(detailsViewModel.imagesGallery, id: \.self) { urlCouple in
-                                VStack {
-                                    ForEach(urlCouple, id: \.self) { url in
-                                        if let url = url {
-                                            WebImage(url: url, options: [], context: [.imageThumbnailPixelSize : CGSize.zero])
-                                                .placeholder {ProgressView()}
-                                                .resizable()
-                                                .scaledToFit()
-                                                .frame(width: geo.size.width / 4, height: geo.size.height * 0.15)
-                                                .overlay(
-                                                    RoundedRectangle(cornerRadius: 36)
-                                                        .stroke(.black, lineWidth: 5)
-                                                )
-                                        }
-                                    }
-                                }
-                            }
-                        }
                         
-                        HStack {}
-                            .frame(width: geo.size.width, height: geo.size.height * 0.004)
-                            .background(.black)
-                            .padding(.vertical)
+                        DetailsImagesView(geo: geo, imagesGallery: detailsViewModel.imagesGallery)
                         
-                        Text("Main Stats")
-                            .font(.title2)
-                            .padding(.horizontal)
-                            .padding(.bottom, geo.size.height * 0.01)
-                            .frame(width: geo.size.width, alignment: .leading)
-                        VStack {
-                            ForEach(detailsViewModel.mainStatsTable, id: \.self) { row in
-                                HStack {
-                                    ForEach(row, id: \.name) { pokeStat in
-                                        VStack {
-                                            Text(pokeStat.name)
-                                            Text(String(pokeStat.value))
-                                        }
-                                        .frame(width: geo.size.width * 0.22, height: geo.size.width * 0.2 * 1)
-                                        .multilineTextAlignment(.center)
-                                        .padding(.horizontal)
-                                    }
-                                }
-                            }
-                        }
+                        DetailsDivider(geo: geo)
                         
-                        if let specie = detailsViewModel.pokemonDetails.species.name {
-                            HStack {}
-                                .frame(width: geo.size.width, height: geo.size.height * 0.004)
-                                .background(.black)
-                                .padding(.vertical)
-                            
-                            HStack {
-                                Text("Specie:")
-                                    .font(.title2)
-                                    .padding(.horizontal)
-                                Text(specie)
-                                Spacer()
-                            }
-                        }
+                        DetailsMainStatsView(geo: geo, mainStatsTable: detailsViewModel.mainStatsTable)
                         
-                        HStack {}
-                            .frame(width: geo.size.width, height: geo.size.height * 0.004)
-                            .background(.black)
-                            .padding(.vertical)
+                        DetailsDivider(geo: geo)
                         
-                        Text("Moves")
-                            .font(.title2)
-                            .padding(.horizontal)
-                            .padding(.bottom, geo.size.height * 0.01)
-                            .frame(width: geo.size.width, alignment: .leading)
-                        ScrollView(.horizontal) {
-                            HStack {
-                                ForEach(detailsViewModel.pokemonDetails.moves, id: \.self) { move in
-                                    Text(move.move.name)
-                                        .padding()
-                                        .background(.black)
-                                        .foregroundStyle(.white)
-                                        .cornerRadius(20)
-                                }
-                            }
-                            .padding(.horizontal)
-                        }
+                        DetailsSpecieView(geo: geo, specie: detailsViewModel.pokemonDetails.species.name)
                         
-                        HStack {}
-                            .frame(width: geo.size.width, height: geo.size.height * 0.004)
-                            .background(.black)
-                            .padding(.vertical)
+                        DetailsDivider(geo: geo)
                         
-                        Text("Abilities")
-                            .font(.title2)
-                            .padding(.horizontal)
-                            .padding(.bottom, geo.size.height * 0.01)
-                            .frame(width: geo.size.width, alignment: .leading)
-                        ScrollView(.horizontal) {
-                            HStack {
-                                ForEach(detailsViewModel.pokemonDetails.abilities, id: \.self) { abilityWrapper in
-                                    Text(abilityWrapper.ability.name)
-                                        .padding()
-                                        .background(.black)
-                                        .foregroundStyle(.white)
-                                        .cornerRadius(20)
-                                }
-                            }
-                            .padding(.horizontal)
-                        }
+                        DetailsMovesView(geo: geo, moves: detailsViewModel.pokemonDetails.moves)
                         
-                        HStack {}
-                            .frame(width: geo.size.width, height: geo.size.height * 0.004)
-                            .background(.black)
-                            .padding(.vertical)
+                        DetailsDivider(geo: geo)
                         
-                        HStack {
-                            Text("Forms:")
-                                .font(.title2)
-                                .padding(.horizontal)
-                            VStack {
-                                ForEach(detailsViewModel.pokemonDetails.forms, id: \.name) { form in
-                                    HStack {
-                                        Text(form.name)
-                                        Spacer()
-                                    }
-                                }
-                            }
-                            Spacer()
-                        }
+                        DetailsAbilitiesView(geo: geo, abilities: detailsViewModel.pokemonDetails.abilities)
                         
-                        HStack {}
-                            .frame(width: geo.size.width, height: geo.size.height * 0.004)
-                            .background(.black)
-                            .padding(.vertical)
+                        DetailsDivider(geo: geo)
                         
-                        Text("Games")
-                            .font(.title2)
-                            .padding(.horizontal)
-                            .padding(.bottom, geo.size.height * 0.01)
-                            .frame(width: geo.size.width, alignment: .leading)
-                        ScrollView(.horizontal) {
-                            HStack {
-                                ForEach(detailsViewModel.pokemonDetails.game_indices, id: \.self) { gameIndex in
-                                    let game = gameIndex.version.name
-                                    let gameColor = detailsViewModel.getGameColor(game: game)
-                                    if gameColor.background != .white {
-                                        Text(game)
-                                            .padding()
-                                            .background(gameColor.background)
-                                            .foregroundStyle(gameColor.foreground)
-                                            .cornerRadius(20)
-                                    } else {
-                                        Text(game)
-                                            .padding()
-                                            .background(gameColor.background)
-                                            .foregroundStyle(gameColor.foreground)
-                                            .cornerRadius(20)
-                                            .overlay {
-                                                RoundedRectangle(cornerRadius: 20)
-                                                    .stroke(.black, lineWidth: 2)
-                                            }
-                                    }
-                                }
-                            }
-                            .frame(height: geo.size.height * 0.1)
-                            .padding(.horizontal)
-                        }
+                        DetailsFormsView(geo: geo, forms: detailsViewModel.pokemonDetails.forms)
                         
-                        HStack {}
-                            .frame(width: geo.size.width, height: geo.size.height * 0.004)
-                            .background(.black)
-                            .padding(.vertical)
+                        DetailsDivider(geo: geo)
                         
-                        HStack {
-                            Text("Types:")
-                                .font(.title2)
-                                .padding(.horizontal)
-                            VStack {
-                                ForEach(detailsViewModel.pokemonDetails.types, id: \.self) { typeWrapper in
-                                    HStack {
-                                        Text(typeWrapper.type.name)
-                                        Spacer()
-                                    }
-                                }
-                            }
-                            Spacer()
-                        }
+                        DetailsGamesView(geo: geo, coloredGameIndices: detailsViewModel.getColoredGameIndices())
+                        
+                        DetailsDivider(geo: geo)
+                        
+                        DetailsTypesView(geo: geo, types: detailsViewModel.pokemonDetails.types)
                         
                         VStack {}
                             .frame(height: geo.size.height * 0.1)
