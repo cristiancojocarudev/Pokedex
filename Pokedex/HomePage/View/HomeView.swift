@@ -102,7 +102,7 @@ struct HomeView: View {
                                     }
                                 }
                             Spacer()
-                            Text("Page \(homeViewModel.filteredAndpaginatedPokemons.count > 0 ? homeViewModel.page + 1 : 0) of \(homeViewModel.maxPage + 1)")
+                            Text("Page \(homeViewModel.maxPage + 1 > 0 ? homeViewModel.page + 1 : 0) of \(homeViewModel.maxPage + 1)")
                             Spacer()
                             Image(systemName: "arrow.right")
                                 .padding()

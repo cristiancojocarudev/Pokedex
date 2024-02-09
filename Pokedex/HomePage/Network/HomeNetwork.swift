@@ -34,7 +34,7 @@ class HomeNetwork {
             }
             if let data = data {
                 do {
-                    let pokemonsReferences = try JSONDecoder().decode(PokemonsReferences.self, from: data)
+                    let pokemonsReferences = try JSONDecoder().decode(PokemonsList.self, from: data)
                     var items = items
                     for reference in pokemonsReferences.results {
                         items.append(reference)

@@ -10,17 +10,9 @@ import Foundation
 struct PokemonItem: Hashable {
     var reference: PokemonReference
     var details: PokemonDetails
-    
-    static func == (lhs: PokemonItem, rhs: PokemonItem) -> Bool {
-        return lhs.reference.name == rhs.reference.name
-    }
-    
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(reference)
-    }
 }
 
-struct PokemonsReferences: Decodable {
+struct PokemonsList: Decodable {
     var count: Int
     var next: String?
     var previous: String?
@@ -33,7 +25,7 @@ struct PokemonReference: Decodable, Hashable {
     var url: String
 }
 
-struct PokemonDetails: Decodable {
+struct PokemonDetails: Decodable, Hashable {
     var abilities: [AbilityWrapper]
     var base_experience: Int?
     var forms: [Form]
@@ -49,10 +41,6 @@ struct PokemonDetails: Decodable {
 }
 
 struct AbilityWrapper: Decodable, Hashable {
-    static func == (lhs: AbilityWrapper, rhs: AbilityWrapper) -> Bool {
-        return lhs.ability.name == rhs.ability.name
-    }
-    
     var ability: Ability
 }
 
@@ -60,19 +48,11 @@ struct Ability: Decodable, Hashable {
     var name: String
 }
 
-struct Form: Decodable {
+struct Form: Decodable, Hashable {
     var name: String
 }
 
 struct GameIndex: Decodable, Hashable {
-    static func == (lhs: GameIndex, rhs: GameIndex) -> Bool {
-        return lhs.version.name == rhs.version.name
-    }
-    
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(version)
-    }
-    
     var version: Game
 }
 
@@ -81,14 +61,6 @@ struct Game: Decodable, Hashable {
 }
 
 struct MoveWrapper: Decodable, Hashable {
-    static func == (lhs: MoveWrapper, rhs: MoveWrapper) -> Bool {
-        return lhs.move.name == rhs.move.name
-    }
-    
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(move)
-    }
-    
     var move: Move
 }
 
@@ -96,51 +68,43 @@ struct Move: Decodable, Hashable {
     var name: String
 }
 
-struct Specie: Decodable {
+struct Specie: Decodable, Hashable {
     var name: String?
 }
 
-struct SpritesWrapper: Decodable {
+struct SpritesWrapper: Decodable, Hashable {
     var back_default: String?
     var front_default: String?
     var other: OtherSpritesWrapper
 }
 
-struct OtherSpritesWrapper: Decodable {
+struct OtherSpritesWrapper: Decodable, Hashable {
     var dream_world: FrontSprite
     var home: FrontSprite
     //var official_artwork: FrontSprite
     var showdown: FrontAndBackSprite
 }
 
-struct FrontSprite: Decodable {
+struct FrontSprite: Decodable, Hashable {
     var front_default: String?
 }
 
-struct FrontAndBackSprite: Decodable {
+struct FrontAndBackSprite: Decodable, Hashable {
     var front_default: String?
     var back_default: String?
 }
 
-struct StatWrapper: Decodable {
+struct StatWrapper: Decodable, Hashable {
     var base_stat: Int
     var effort: Int
     var stat: Stat
 }
 
-struct Stat: Decodable {
+struct Stat: Decodable, Hashable {
     var name: String?
 }
 
 struct PokeTypeWrapper: Decodable, Hashable {
-    static func == (lhs: PokeTypeWrapper, rhs: PokeTypeWrapper) -> Bool {
-        return lhs.type.name == rhs.type.name
-    }
-    
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(type)
-    }
-    
     var type: PokeType
 }
 
