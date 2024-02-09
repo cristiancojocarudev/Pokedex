@@ -102,7 +102,7 @@ struct HomeView: View {
                                     }
                                 }
                             Spacer()
-                            Text("Page \(homeViewModel.filteredAndPaginatedPokemons.count > 0 ? homeViewModel.page + 1 : 0) of \(homeViewModel.maxPage + 1)")
+                            Text("Page \(homeViewModel.paginatedPokemons.count > 0 ? homeViewModel.page + 1 : 0) of \(homeViewModel.maxPage + 1)")
                             Spacer()
                             Image(systemName: "arrow.right")
                                 .padding()
@@ -128,8 +128,7 @@ struct HomeView: View {
             homeViewModel.loadData()
         }
         .onChange(of: homeViewModel.searchText) { oldValue, newValue in
-            homeViewModel.page = 0
-            homeViewModel.populatePokemonItems()
+            homeViewModel.onSearchTextChanged()
         }
     }
 }
