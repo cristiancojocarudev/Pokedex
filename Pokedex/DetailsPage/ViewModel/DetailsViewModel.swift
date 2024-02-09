@@ -11,7 +11,7 @@ import SwiftUI
 class DetailsViewModel: ObservableObject {
     @Published var pokemonDetails: PokemonDetails
     
-    var imagesGallery: [[URL?]] = []
+    var imagesGallery: [[URL]] = []
     
     var mainStatsTable: [[PokeStat]] = []
     
@@ -22,18 +22,30 @@ class DetailsViewModel: ObservableObject {
     }
     
     private func populateImagesGallery() {
-        imagesGallery.append([
-            URL(string: pokemonDetails.sprites.front_default ?? ""),
-            URL(string: pokemonDetails.sprites.back_default ?? ""),
-        ])
-        imagesGallery.append([
-            URL(string: pokemonDetails.sprites.other.home.front_default ?? ""),
-            URL(string: pokemonDetails.sprites.other.dream_world.front_default ?? ""),
-        ])
-        imagesGallery.append([
-            URL(string: pokemonDetails.sprites.other.showdown.front_default ?? ""),
-            URL(string: pokemonDetails.sprites.other.showdown.back_default ?? ""),
-        ])
+        let rowLength = 3
+        let imageReferences: [String?] = [
+            pokemonDetails.sprites.front_default,
+            pokemonDetails.sprites.other.home.front_default,
+            pokemonDetails.sprites.other.showdown.front_default,
+            pokemonDetails.sprites.back_default,
+            pokemonDetails.sprites.other.dream_world.front_default,
+            pokemonDetails.sprites.other.showdown.back_default
+        ]
+        var rowBuffer: [URL] = []
+        for imageReference in imageReferences {
+            if let imageReference = imageReference {
+                if let imageUrl = URL(string: imageReference) {
+                    rowBuffer.append(imageUrl)
+                    if rowBuffer.count == rowLength {
+                        imagesGallery.append(rowBuffer)
+                        rowBuffer = []
+                    }
+                }
+            }
+        }
+        if !rowBuffer.isEmpty {
+            imagesGallery.append(rowBuffer)
+        }
     }
     
     private func populateMainStatsTable() {
@@ -51,14 +63,15 @@ class DetailsViewModel: ObservableObject {
         var rowBuffer: [PokeStat] = []
         for stat in pokemonDetails.stats {
             let value = stat.base_stat
-            if let name = stat.stat.name {
-                let pokeStat = PokeStat(name: name, value: value)
-                rowBuffer.append(pokeStat)
-                if rowBuffer.count == rowLength {
-                    mainStatsTable.append(rowBuffer)
-                    rowBuffer = []
-                }
+            let pokeStat = PokeStat(name: stat.stat.name, value: value)
+            rowBuffer.append(pokeStat)
+            if rowBuffer.count == rowLength {
+                mainStatsTable.append(rowBuffer)
+                rowBuffer = []
             }
+        }
+        if !rowBuffer.isEmpty {
+            mainStatsTable.append(rowBuffer)
         }
     }
     

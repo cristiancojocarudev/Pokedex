@@ -28,7 +28,7 @@ struct PokemonReference: Decodable, Hashable {
 struct PokemonDetails: Decodable, Hashable {
     var abilities: [AbilityWrapper]
     var base_experience: Int?
-    var forms: [Form]
+    var forms: [PokeForm]
     var game_indices: [GameIndex]
     var height: Int?
     var moves: [MoveWrapper]
@@ -48,7 +48,7 @@ struct Ability: Decodable, Hashable {
     var name: String
 }
 
-struct Form: Decodable, Hashable {
+struct PokeForm: Decodable, Hashable {
     var name: String
 }
 
@@ -101,7 +101,7 @@ struct StatWrapper: Decodable, Hashable {
 }
 
 struct Stat: Decodable, Hashable {
-    var name: String?
+    var name: String
 }
 
 struct PokeTypeWrapper: Decodable, Hashable {

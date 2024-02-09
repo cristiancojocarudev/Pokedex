@@ -19,17 +19,21 @@ struct HorizontalScrollViewSection: View {
             .padding(.horizontal)
             .padding(.bottom, geo.size.height * 0.01)
             .frame(width: geo.size.width, alignment: .leading)
-        ScrollView(.horizontal) {
-            HStack {
-                ForEach(data, id: \.self) { text in
-                    Text(text)
-                        .padding()
-                        .background(.black)
-                        .foregroundStyle(.white)
-                        .cornerRadius(20)
+        if data.isEmpty {
+            Text("No \(title.lowercased()) yet")
+        } else {
+            ScrollView(.horizontal) {
+                HStack {
+                    ForEach(data, id: \.self) { text in
+                        Text(text)
+                            .padding()
+                            .background(.black)
+                            .foregroundStyle(.white)
+                            .cornerRadius(20)
+                    }
                 }
+                .padding(.horizontal)
             }
-            .padding(.horizontal)
         }
     }
 }

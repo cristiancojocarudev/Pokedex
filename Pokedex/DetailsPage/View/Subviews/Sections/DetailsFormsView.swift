@@ -10,7 +10,7 @@ import SwiftUI
 struct DetailsFormsView: View {
     let geo: GeometryProxy
     
-    var forms: [Form]
+    var forms: [PokeForm]
     
     var body: some View {
         VerticalListSection(geo: geo, title: "Forms", data: forms.map({$0.name}))

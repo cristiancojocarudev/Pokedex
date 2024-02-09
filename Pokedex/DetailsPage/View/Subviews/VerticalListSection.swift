@@ -18,11 +18,15 @@ struct VerticalListSection: View {
             Text("\(title):")
                 .font(.title2)
                 .padding(.horizontal)
-            VStack {
-                ForEach(data, id: \.self) { text in
-                    HStack {
-                        Text(text)
-                        Spacer()
+            if data.isEmpty {
+                Text("No \(title.lowercased()) yet")
+            } else {
+                VStack {
+                    ForEach(data, id: \.self) { text in
+                        HStack {
+                            Text(text)
+                            Spacer()
+                        }
                     }
                 }
             }

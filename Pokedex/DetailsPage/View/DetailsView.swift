@@ -96,7 +96,7 @@ struct DetailsView_Preview: PreviewProvider {
                 AbilityWrapper(ability: Ability(name: "chlorophyll"))
             ]
             let base_experience: Int = 64
-            let forms: [Form] = [Form(name: "bulbasaur"), Form(name: "bulbasaur2"), Form(name: "bulbasaur3")]
+            let forms: [PokeForm] = [PokeForm(name: "bulbasaur"), PokeForm(name: "bulbasaur2"), PokeForm(name: "bulbasaur3")]
             var game_indices: [GameIndex] = []
             for _ in 0...85 {
                 game_indices.append(GameIndex(version: Game(name: "green")))
