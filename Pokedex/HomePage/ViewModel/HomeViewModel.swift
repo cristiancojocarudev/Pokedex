@@ -11,7 +11,7 @@ class HomeViewModel: ObservableObject {
     
     @Published var searchText: String = ""
     
-    @Published var isLoading = true
+    @Published var isLoading = false
     var loadingId = 0
     let loadingQueue = DispatchQueue(label: "loadingQueue")
     let loadingSemaphore = DispatchSemaphore(value: 1)
@@ -25,6 +25,10 @@ class HomeViewModel: ObservableObject {
     @Published var pokemonItems: [PokemonItem] = []
     var pokedex: [PokemonReference: PokemonDetails] = [:]
     var pokemons: [PokemonReference] = []
+    
+    init() {
+        loadData()
+    }
     
     func filterPokemons(searchText: String) -> [PokemonReference] {
         if searchText.isEmpty {
@@ -48,11 +52,14 @@ class HomeViewModel: ObservableObject {
     }
     
     func loadData() {
-        HomeNetwork.shared.fetchPokemonsReferences(url: HomeNetwork.URLs.pokemonsReferences.rawValue, items: []) { pokemons in
-            if let pokemons = pokemons {
-                DispatchQueue.main.async {
-                    self.pokemons = pokemons
-                    self.populatePokemonItems()
+        isLoading = true
+        DispatchQueue.global(qos: .userInitiated).async {
+            HomeNetwork.shared.fetchPokemonsReferences(url: HomeNetwork.URLs.pokemonsReferences.rawValue, items: []) { pokemons in
+                if let pokemons = pokemons {
+                    DispatchQueue.main.async {
+                        self.pokemons = pokemons
+                        self.populatePokemonItems()
+                    }
                 }
             }
         }

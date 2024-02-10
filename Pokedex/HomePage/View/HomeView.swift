@@ -66,9 +66,6 @@ struct HomeView: View {
             }
         }
         .navigationBarHidden(true)
-        .onAppear() {
-            homeViewModel.loadData()
-        }
         .onChange(of: homeViewModel.searchText) { oldValue, newValue in
             homeViewModel.onSearchTextChanged()
         }
