@@ -84,17 +84,22 @@ class HomeViewModel: ObservableObject {
             self.loadingSemaphore.wait()
             var loadingId = loadingId
             var filteredAndpaginatedPokemons = filteredAndpaginatedPokemons
-            if loadingId == nil {
-                DispatchQueue.main.async {
-                    self.page = page
+            if let loadingId = loadingId {
+                if loadingId < self.loadingId {
+                    self.loadingSemaphore.signal()
+                    return
                 }
+            } else {
                 self.loadingId += 1
                 filteredAndpaginatedPokemons = self.computePokemonsFilteringAndPaging(page: page)
                 loadingId = self.loadingId
-            }
-            if loadingId! < self.loadingId {
-                self.loadingSemaphore.signal()
-                return
+                if loadingId! < self.loadingId {
+                    self.loadingSemaphore.signal()
+                    return
+                }
+                DispatchQueue.main.async {
+                    self.page = page
+                }
             }
             var pokemonItemsBuffer = pokemonItemsBuffer
             if index >= filteredAndpaginatedPokemons.count {
