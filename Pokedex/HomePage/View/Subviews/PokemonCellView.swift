@@ -10,12 +10,13 @@ import SwiftUI
 struct PokemonCellView: View {
     let geo: GeometryProxy
     
-    @State var pokemonItem: PokemonItem
+    var pokemonItem: PokemonItem
+    
+    var onTap: () -> Void
     
     var body: some View {
-        NavigationLink {
-            let detailsViewModel = DetailsViewModel(pokemonDetails: pokemonItem.details)
-            DetailsView(detailsViewModel: detailsViewModel)
+        Button {
+          onTap()
         } label: {
             HStack {
                 ZStack {

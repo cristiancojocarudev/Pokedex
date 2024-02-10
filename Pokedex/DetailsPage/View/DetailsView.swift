@@ -11,7 +11,7 @@ import SDWebImageSwiftUI
 struct DetailsView: View {
     @ObservedObject var detailsViewModel: DetailsViewModel
     
-    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    @Binding var isPresented: Bool
     
     var body: some View {
         ZStack {
@@ -66,7 +66,7 @@ struct DetailsView: View {
             GeometryReader { geo in
                 HStack {
                     Button {
-                        self.presentationMode.wrappedValue.dismiss()
+                        isPresented = false
                     } label: {
                         ZStack {
                             Circle()
@@ -127,6 +127,7 @@ struct DetailsView_Preview: PreviewProvider {
     }
     
     static var previews: some View {
-        DetailsView(detailsViewModel: DetailsViewModel(pokemonDetails: pokemonDetails))
+        DetailsView(detailsViewModel: DetailsViewModel(pokemonDetails: pokemonDetails), isPresented: Binding(get: { return false}, set: { _ in
+        }))
     }
 }

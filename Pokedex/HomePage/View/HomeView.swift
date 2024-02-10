@@ -50,7 +50,9 @@ struct HomeView: View {
                                 ScrollView {
                                     VStack {
                                         ForEach(homeViewModel.pokemonItems, id: \.self) { pokemonItem in
-                                            PokemonCellView(geo: geo, pokemonItem: pokemonItem)
+                                            PokemonCellView(geo: geo, pokemonItem: pokemonItem) {
+                                                homeViewModel.navigateToDetailsPage(pokemonItem: pokemonItem)
+                                            }
                                         }
                                     }
                                 }
@@ -62,6 +64,11 @@ struct HomeView: View {
                         PageHandlerView(geo: geo, page: homeViewModel.page, maxPage: homeViewModel.maxPage, canGoBack: homeViewModel.canGoBack, canGoForward: homeViewModel.canGoForward, goBack: homeViewModel.goBack, goForward: homeViewModel.goForward)
                     }
                     .padding()
+                }
+            }
+            .navigationDestination(isPresented: $homeViewModel.isDetailsPagePresented) {
+                if let detailsViewModel = homeViewModel.detailsViewModel {
+                    DetailsView(detailsViewModel: detailsViewModel, isPresented: $homeViewModel.isDetailsPagePresented)
                 }
             }
         }

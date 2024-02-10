@@ -26,6 +26,14 @@ class HomeViewModel: ObservableObject {
     var pokedex: [PokemonReference: PokemonDetails] = [:]
     var pokemons: [PokemonReference] = []
     
+    @Published var isDetailsPagePresented = false
+    var detailsViewModel: DetailsViewModel?
+    
+    func navigateToDetailsPage(pokemonItem: PokemonItem) {
+        detailsViewModel = DetailsViewModel(pokemonDetails: pokemonItem.details)
+        isDetailsPagePresented = true
+    }
+    
     init() {
         loadData()
     }
