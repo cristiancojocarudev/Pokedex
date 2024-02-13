@@ -47,13 +47,20 @@ struct HomeView: View {
                                 }
                                 .frame(height: geo.size.height * 0.6)
                             } else {
-                                ScrollView {
-                                    VStack {
-                                        ForEach(homeViewModel.pokemonItems, id: \.self) { pokemonItem in
-                                            PokemonCellView(geo: geo, pokemonItem: pokemonItem) {
-                                                homeViewModel.navigateToDetailsPage(pokemonItem: pokemonItem)
-                                            }
+                                List {
+                                    ForEach(homeViewModel.pokemonItems, id: \.self) { pokemonItem in
+                                        PokemonCellView(geo: geo, pokemonItem: pokemonItem) {
+                                            homeViewModel.navigateToDetailsPage(pokemonItem: pokemonItem)
                                         }
+                                    }
+                                    HStack {
+                                        Spacer()
+                                        Text("Loading...")
+                                        Spacer()
+                                    }
+                                    .onAppear() {
+                                        print("Load more data")
+                                        homeViewModel.loadMoreData()
                                     }
                                 }
                                 .frame(height: geo.size.height * 0.6)

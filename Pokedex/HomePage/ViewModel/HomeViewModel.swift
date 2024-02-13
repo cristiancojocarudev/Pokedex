@@ -16,7 +16,7 @@ class HomeViewModel: ObservableObject {
     let loadingQueue = DispatchQueue(label: "loadingQueue")
     let loadingSemaphore = DispatchSemaphore(value: 1)
     
-    @Published var page = 0
+    var page = -1
     var pageLimit = 20
     var maxPage: Int = -1
     var canGoBack: Bool = false
@@ -66,15 +66,20 @@ class HomeViewModel: ObservableObject {
                 if let pokemons = pokemons {
                     DispatchQueue.main.async {
                         self.pokemons = pokemons
-                        self.populatePokemonItems()
+                        self.isLoading = false
+                        //self.populatePokemonItems()
                     }
                 }
             }
         }
     }
     
+    func loadMoreData() {
+        populatePokemonItems(page: page + 1)
+    }
+    
     func populatePokemonItems(page: Int = 0) {
-        self.isLoading = true
+        //self.isLoading = true
         fetchPokemonItem(page: page, index: 0)
     }
     
@@ -113,7 +118,7 @@ class HomeViewModel: ObservableObject {
             if index >= filteredAndpaginatedPokemons.count {
                 DispatchQueue.main.async {
                     self.loadingSemaphore.signal()
-                    self.pokemonItems = pokemonItemsBuffer
+                    self.pokemonItems.append(contentsOf: pokemonItemsBuffer)
                     self.isLoading = false
                 }
                 return
