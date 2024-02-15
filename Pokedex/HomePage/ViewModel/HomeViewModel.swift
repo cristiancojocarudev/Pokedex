@@ -11,7 +11,6 @@ class HomeViewModel: ObservableObject {
     
     @Published var searchText: String = ""
     
-    @Published var isLoading = false
     var loadingId = 0
     let loadingQueue = DispatchQueue(label: "loadingQueue")
     let loadingSemaphore = DispatchSemaphore(value: 1)
@@ -32,10 +31,6 @@ class HomeViewModel: ObservableObject {
     func navigateToDetailsPage(pokemonItem: PokemonItem) {
         detailsViewModel = DetailsViewModel(pokemonDetails: pokemonItem.details)
         isDetailsPagePresented = true
-    }
-    
-    init() {
-        loadData()
     }
     
     func filterPokemons(searchText: String) -> [PokemonReference] {
@@ -59,23 +54,21 @@ class HomeViewModel: ObservableObject {
         return paged
     }
     
-    func loadData() {
-        isLoading = true
-        DispatchQueue.global(qos: .userInitiated).async {
-            HomeNetwork.shared.fetchPokemonsReferences(url: HomeNetwork.URLs.pokemonsReferences.rawValue, items: []) { pokemons in
-                if let pokemons = pokemons {
-                    DispatchQueue.main.async {
-                        self.pokemons = pokemons
-                        self.isLoading = false
-                        //self.populatePokemonItems()
+    func loadMoreData() {
+        if pokemons.isEmpty {
+            DispatchQueue.global(qos: .userInitiated).async {
+                HomeNetwork.shared.fetchPokemonsReferences(url: HomeNetwork.URLs.pokemonsReferences.rawValue, items: []) { pokemons in
+                    if let pokemons = pokemons {
+                        DispatchQueue.main.async {
+                            self.pokemons = pokemons
+                            self.populatePokemonItems(page: self.page + 1)
+                        }
                     }
                 }
             }
+        } else {
+            populatePokemonItems(page: page + 1)
         }
-    }
-    
-    func loadMoreData() {
-        populatePokemonItems(page: page + 1)
     }
     
     func populatePokemonItems(page: Int = 0) {
@@ -119,7 +112,6 @@ class HomeViewModel: ObservableObject {
                 DispatchQueue.main.async {
                     self.loadingSemaphore.signal()
                     self.pokemonItems.append(contentsOf: pokemonItemsBuffer)
-                    self.isLoading = false
                 }
                 return
             }

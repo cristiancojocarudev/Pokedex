@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4000AD3B2B7E7B5C00B0441E /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4000AD3A2B7E7B5C00B0441E /* LoadingView.swift */; };
 		40458BF32B72672C0058115C /* PokedexApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40458BF22B72672C0058115C /* PokedexApp.swift */; };
 		40458BF52B72672C0058115C /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40458BF42B72672C0058115C /* HomeView.swift */; };
 		40458BF72B72672E0058115C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 40458BF62B72672E0058115C /* Assets.xcassets */; };
@@ -38,6 +39,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4000AD3A2B7E7B5C00B0441E /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		40458BEF2B72672C0058115C /* Pokedex.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pokedex.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		40458BF22B72672C0058115C /* PokedexApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokedexApp.swift; sourceTree = "<group>"; };
 		40458BF42B72672C0058115C /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -151,6 +153,7 @@
 				40458C032B72809E0058115C /* LogoView.swift */,
 				40F509082B7652B100399FC8 /* PokemonCellView.swift */,
 				40F5090A2B7653D300399FC8 /* PageHandlerView.swift */,
+				4000AD3A2B7E7B5C00B0441E /* LoadingView.swift */,
 			);
 			path = Subviews;
 			sourceTree = "<group>";
@@ -329,6 +332,7 @@
 				40F508F92B76494200399FC8 /* DetailsSpecieView.swift in Sources */,
 				40F508F72B76488100399FC8 /* DetailsMainStatsView.swift in Sources */,
 				40F509032B764CBF00399FC8 /* DetailsFormsView.swift in Sources */,
+				4000AD3B2B7E7B5C00B0441E /* LoadingView.swift in Sources */,
 				40F5090B2B7653D300399FC8 /* PageHandlerView.swift in Sources */,
 				40F508FD2B764AE000399FC8 /* DetailsMovesView.swift in Sources */,
 				40F508FB2B764A0400399FC8 /* HorizontalScrollViewSection.swift in Sources */,
