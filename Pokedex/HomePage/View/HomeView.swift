@@ -55,7 +55,7 @@ struct HomeView: View {
                                         Text("No results")
                                             .foregroundStyle(.white)
                                             .frame(width: geo.size.width * 0.7, height: geo.size.height * 0.1)
-                                            .background(.blue)
+                                            .background(.red)
                                             .cornerRadius(15)
                                         Spacer()
                                     }

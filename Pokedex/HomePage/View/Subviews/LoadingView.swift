@@ -37,7 +37,7 @@ struct LoadingView: View {
             Spacer()
         }
         .frame(width: geo.size.width * 0.4, height: geo.size.height * 0.1)
-        .background(.red)
+        .background(.blue)
         .cornerRadius(15)
         .onAppear() {
             if firstLoading {
