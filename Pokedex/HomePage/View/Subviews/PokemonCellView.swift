@@ -21,7 +21,7 @@ struct PokemonCellView: View {
             HStack {
                 ZStack {
                     HStack {
-                        if let imageUrl = pokemonItem.details.sprites.front_default {
+                        if let imageUrl = pokemonItem.details!.sprites.front_default {
                             AsyncImage(url: URL(string: imageUrl)) { image in
                                 image
                                     .resizable()

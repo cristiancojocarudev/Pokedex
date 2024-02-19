@@ -9,7 +9,7 @@ import Foundation
 
 struct PokemonItem: Hashable {
     var reference: PokemonReference
-    var details: PokemonDetails
+    var details: PokemonDetails?
 }
 
 struct PokemonsList: Decodable {

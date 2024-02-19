@@ -49,27 +49,23 @@ struct HomeView: View {
                                     .listRowSeparator(.hidden)
                                     .listRowBackground(Color.clear)
                                 }
-                                HStack {
-                                    Spacer()
-                                    LoadingView(geo: geo)
-                                    Spacer()
-                                }
-                                .listRowInsets(EdgeInsets.init(top:  geo.size.height * 0.01, leading: 5, bottom: 0, trailing: 5))
-                                .listRowSeparator(.hidden)
-                                .listRowBackground(Color.clear)
-                                .onAppear() {
-                                    homeViewModel.loadMoreData()
+                                if homeViewModel.canGoForward {
+                                    HStack {
+                                        Spacer()
+                                        LoadingView(geo: geo)
+                                        Spacer()
+                                    }
+                                    .listRowInsets(EdgeInsets.init(top:  geo.size.height * 0.01, leading: 5, bottom: 0, trailing: 5))
+                                    .listRowSeparator(.hidden)
+                                    .listRowBackground(Color.clear)
+                                    .onAppear() {
+                                        homeViewModel.loadMoreData()
+                                    }
                                 }
                             }
                             .environment(\.defaultMinListRowHeight, geo.size.height * 0.1)
                             .scrollContentBackground(.hidden)
-                            .frame(width: geo.size.width * 0.92, height: geo.size.height * 0.6)
-                            Spacer()
-                        }
-                        
-                        HStack {
-                            Spacer()
-                            PageHandlerView(geo: geo, page: homeViewModel.page, maxPage: homeViewModel.maxPage, canGoBack: homeViewModel.canGoBack, canGoForward: homeViewModel.canGoForward, goBack: homeViewModel.goBack, goForward: homeViewModel.goForward)
+                            .frame(width: geo.size.width * 0.92, height: geo.size.height * 0.8)
                             Spacer()
                         }
                     }
