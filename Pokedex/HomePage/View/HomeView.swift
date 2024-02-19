@@ -49,6 +49,23 @@ struct HomeView: View {
                                     .listRowSeparator(.hidden)
                                     .listRowBackground(Color.clear)
                                 }
+                                if homeViewModel.pokemonItems.isEmpty && !homeViewModel.canGoForward {
+                                    HStack {
+                                        Spacer()
+                                        Text("No results")
+                                            .foregroundStyle(.white)
+                                            .frame(width: geo.size.width * 0.7, height: geo.size.height * 0.1)
+                                            .background(.blue)
+                                            .cornerRadius(15)
+                                        Spacer()
+                                    }
+                                    .listRowInsets(EdgeInsets.init(top:  geo.size.height * 0.01, leading: 5, bottom: 0, trailing: 5))
+                                    .listRowSeparator(.hidden)
+                                    .listRowBackground(Color.clear)
+                                    .onAppear() {
+                                        homeViewModel.loadMoreData()
+                                    }
+                                }
                                 if homeViewModel.canGoForward {
                                     HStack {
                                         Spacer()
@@ -80,7 +97,7 @@ struct HomeView: View {
         }
         .navigationBarHidden(true)
         .onChange(of: homeViewModel.searchText) { oldValue, newValue in
-            homeViewModel.onSearchTextChanged()
+            homeViewModel.onSearchTextChanged(newValue: newValue)
         }
     }
 }
