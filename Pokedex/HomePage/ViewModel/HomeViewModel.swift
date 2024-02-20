@@ -113,9 +113,14 @@ class HomeViewModel: ObservableObject {
             if let details = self.pokedex[pokemon] {
                 onCompletion(details)
             } else {
-                HomeNetwork.shared.fetchPokemonDetails(pokemonName: pokemon.name) { details in
-                    if let details = details {
-                       onCompletion(details)
+                let fetchable = PokemonDetailsFetchable(pokemonName: pokemon.name)
+                DefaultNetworkService().fetchData(dataFetchable: fetchable) { result in
+                    switch result {
+                    case .success(let details):
+                        onCompletion(details)
+                        break
+                    case .failure(let error):
+                        break
                     }
                 }
             }

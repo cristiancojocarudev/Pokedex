@@ -7,6 +7,19 @@
 
 import Foundation
 
+struct PokemonDetailsFetchable: DataFetchable {
+    typealias Response = PokemonDetails
+    
+    let baseUrl: String = "https://pokeapi.co/api/v2/pokemon/"
+    var url: String
+    
+    var method: HTTPMethod = .get
+    
+    init(pokemonName: String) {
+        self.url = baseUrl + pokemonName
+    }
+}
+
 class HomeNetwork {
     static let shared = HomeNetwork()
     
