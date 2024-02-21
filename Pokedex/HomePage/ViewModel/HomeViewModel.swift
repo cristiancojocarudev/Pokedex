@@ -56,13 +56,19 @@ class HomeViewModel: ObservableObject {
     func loadMoreData() {
         if pokemons.isEmpty {
             DispatchQueue.global(qos: .userInitiated).async {
-                HomeNetwork.shared.fetchPokemonsReferences(url: HomeNetwork.URLs.pokemonsReferences.rawValue, items: []) { pokemons in
-                    if let pokemons = pokemons {
+                let fetchable = PokemonsReferencesFetchable()
+                DefaultNetworkService().fetchDataSerially(fetchable: fetchable, items: [PokemonReference]()) { result in
+                    switch result {
+                    case .success(let pokemons):
                         self.serialPokemonItemsLoadingQueue.async {
                             self.pokemons = pokemons
                             self.page += 1
                             self.populatePokemonItems(searchText: "", page: 0, loadingId: self.loadingId)
                         }
+                        break
+                    case .failure(let error):
+                        print(error)
+                        break
                     }
                 }
             }
@@ -120,6 +126,7 @@ class HomeViewModel: ObservableObject {
                         onCompletion(details)
                         break
                     case .failure(let error):
+                        print(error)
                         break
                     }
                 }

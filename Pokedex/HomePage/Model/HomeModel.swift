@@ -12,7 +12,7 @@ struct PokemonItem: Hashable {
     var details: PokemonDetails?
 }
 
-struct PokemonsList: Decodable {
+struct PokemonsList: Decodable, SeriallyFetchableDataContainer {
     var count: Int
     var next: String?
     var previous: String?

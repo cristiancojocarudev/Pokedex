@@ -7,6 +7,14 @@
 
 import Foundation
 
+struct PokemonsReferencesFetchable: DataFetchable {
+    typealias Response = PokemonsList
+    
+    var url: String = "https://pokeapi.co/api/v2/pokemon"
+    
+    var method: HTTPMethod = .get
+}
+
 struct PokemonDetailsFetchable: DataFetchable {
     typealias Response = PokemonDetails
     
