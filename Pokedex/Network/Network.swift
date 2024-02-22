@@ -29,17 +29,12 @@ protocol DataFetchable {
     var url: String { get set }
     var method: HTTPMethod { get }
     var headers: [String : String] { get }
-    var queryItems: [String : String] { get }
     
     func fetch(data: Data) throws -> Response
 }
 
 extension DataFetchable {
     var headers: [String : String] {
-        [:]
-    }
-        
-    var queryItems: [String : String] {
         [:]
     }
 }
@@ -53,14 +48,22 @@ extension DataFetchable where Response: Decodable {
 }
 
 protocol NetworkService {
-    func fetchData<T: DataFetchable>(dataFetchable: T, completion: @escaping (Result<T.Response, Error>) -> Void)
+    func fetchData<T: DataFetchable>(fetchable: T, completion: @escaping (Result<T.Response, Error>) -> Void)
+}
+
+protocol SeriallyFetchableDataContainer: Decodable {
+    associatedtype Result
+    
+    var count: Int { get }
+    var next: String? { get }
+    var previous: String? { get }
+    var results: [Result] { get }
 }
 
 extension NetworkService {
     func fetchDataSerially<C: DataFetchable, R: Decodable>(fetchable: C, items: [R], completion: @escaping (Result<[R], Error>) -> Void) {
-        print(fetchable.url)
         var items = items
-        fetchData(dataFetchable: fetchable) { result in
+        self.fetchData(fetchable: fetchable) { result in
             switch result {
             case .success(let response):
                 if let response = response as? (any SeriallyFetchableDataContainer),
@@ -69,7 +72,7 @@ extension NetworkService {
                         if let next = response.next {
                             var fetchable = fetchable
                             fetchable.url = next
-                            fetchDataSerially(fetchable: fetchable, items: items) { result in
+                            self.fetchDataSerially(fetchable: fetchable, items: items) { result in
                                 completion(result)
                                 return
                             }
@@ -88,13 +91,4 @@ extension NetworkService {
             }
         }
     }
-}
-
-protocol SeriallyFetchableDataContainer: Decodable {
-    associatedtype Result
-    
-    var count: Int { get }
-    var next: String? { get }
-    var previous: String? { get }
-    var results: [Result] { get }
 }

@@ -120,7 +120,7 @@ class HomeViewModel: ObservableObject {
                 onCompletion(details)
             } else {
                 let fetchable = PokemonDetailsFetchable(pokemonName: pokemon.name)
-                DefaultNetworkService().fetchData(dataFetchable: fetchable) { result in
+                DefaultNetworkService().fetchData(fetchable: fetchable) { result in
                     switch result {
                     case .success(let details):
                         onCompletion(details)

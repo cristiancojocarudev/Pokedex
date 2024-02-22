@@ -9,27 +9,15 @@ import Foundation
 
 class DefaultNetworkService: NetworkService {
     
-    func fetchData<T: DataFetchable>(dataFetchable: T, completion: @escaping (Result<T.Response, Error>) -> Void) {
-        
-       guard var urlComponents = URLComponents(string: dataFetchable.url) else {
-           completion(.failure(NetworkError.invalidUrl))
-           return
-        }
-        
-        urlComponents.queryItems = []
-        dataFetchable.queryItems.forEach {
-            let urlQueryItem = URLQueryItem(name: $0.key, value: $0.value)
-            urlComponents.queryItems?.append(urlQueryItem)
-        }
-        
-        guard let url = urlComponents.url else {
+    func fetchData<T: DataFetchable>(fetchable: T, completion: @escaping (Result<T.Response, Error>) -> Void) {
+        guard let url = URL(string: fetchable.url) else {
             completion(.failure(NetworkError.invalidUrl))
             return
         }
         
         var urlRequest = URLRequest(url: url)
-        urlRequest.httpMethod = dataFetchable.method.rawValue
-        urlRequest.allHTTPHeaderFields = dataFetchable.headers
+        urlRequest.httpMethod = fetchable.method.rawValue
+        urlRequest.allHTTPHeaderFields = fetchable.headers
         
         URLSession.shared.dataTask(with: url) { (data, response, error) in
             if let error = error {
@@ -53,7 +41,7 @@ class DefaultNetworkService: NetworkService {
             }
             
             do {
-                let fetchedData = try dataFetchable.fetch(data: data)
+                let fetchedData = try fetchable.fetch(data: data)
                 completion(.success(fetchedData))
             } catch {
                 completion(.failure(error))
