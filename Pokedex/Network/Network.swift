@@ -30,7 +30,7 @@ protocol DataFetchable {
     var method: HTTPMethod { get }
     var headers: [String : String] { get }
     
-    func fetch(data: Data) throws -> Response
+    func decode(data: Data) throws -> Response
 }
 
 extension DataFetchable {
@@ -41,7 +41,7 @@ extension DataFetchable {
 
 extension DataFetchable where Response: Decodable {
     
-    func fetch(data: Data) throws -> Response {
+    func decode(data: Data) throws -> Response {
         let decoder = JSONDecoder()
         return try decoder.decode(Response.self, from: data)
     }

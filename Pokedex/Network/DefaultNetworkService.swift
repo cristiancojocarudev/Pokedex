@@ -41,8 +41,8 @@ class DefaultNetworkService: NetworkService {
             }
             
             do {
-                let fetchedData = try fetchable.fetch(data: data)
-                completion(.success(fetchedData))
+                let decodedData = try fetchable.decode(data: data)
+                completion(.success(decodedData))
             } catch {
                 completion(.failure(error))
             }
