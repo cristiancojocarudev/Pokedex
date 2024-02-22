@@ -6,9 +6,16 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct HomeView: View {
     @StateObject var homeViewModel = HomeViewModel()
+    
+    @Environment(\.modelContext) private var context
+    
+    @Query var storedPokemons: [PokemonReference]
+    
+    @State var firstLoading = true
     
     var body: some View {
         
@@ -63,7 +70,9 @@ struct HomeView: View {
                                     .listRowSeparator(.hidden)
                                     .listRowBackground(Color.clear)
                                     .onAppear() {
-                                        homeViewModel.loadMoreData()
+                                        if !firstLoading {
+                                            homeViewModel.loadMoreData()
+                                        }
                                     }
                                 }
                                 if homeViewModel.canGoForward {
@@ -98,6 +107,12 @@ struct HomeView: View {
         .navigationBarHidden(true)
         .onChange(of: homeViewModel.searchText) { oldValue, newValue in
             homeViewModel.onSearchTextChanged(newValue: newValue)
+        }
+        .onAppear() {
+            if firstLoading {
+                homeViewModel.onAppear(modelContext: context, storedPokemons: storedPokemons)
+                firstLoading = false
+            }
         }
     }
 }

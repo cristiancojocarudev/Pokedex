@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import SwiftUI
+import SwiftData
 
 class HomeViewModel: ObservableObject {
     
@@ -26,6 +28,14 @@ class HomeViewModel: ObservableObject {
     
     @Published var isDetailsPagePresented = false
     var detailsViewModel: DetailsViewModel?
+    
+    var modelContext: ModelContext? = nil
+    
+    func onAppear(modelContext: ModelContext, storedPokemons: [PokemonReference]) {
+        self.modelContext = modelContext
+        self.pokemons = storedPokemons
+        loadMoreData()
+    }
     
     func navigateToDetailsPage(pokemonItem: PokemonItem) {
         detailsViewModel = DetailsViewModel(pokemonDetails: pokemonItem.details!)
@@ -53,7 +63,13 @@ class HomeViewModel: ObservableObject {
         return paged
     }
     
-    func loadMoreData() {
+    func loadMoreData(firstLoading: Bool = false) {
+        if firstLoading {
+            if !pokemons.isEmpty {
+                self.page += 1
+                self.populatePokemonItems(searchText: "", page: 0, loadingId: self.loadingId)
+            }
+        }
         if pokemons.isEmpty {
             DispatchQueue.global(qos: .userInitiated).async {
                 let fetchable = PokemonsReferencesFetchable()
@@ -62,6 +78,11 @@ class HomeViewModel: ObservableObject {
                     case .success(let pokemons):
                         self.serialPokemonItemsLoadingQueue.async {
                             self.pokemons = pokemons
+                            DispatchQueue.main.async {
+                                for pokemon in pokemons {
+                                    self.modelContext?.insert(pokemon)
+                                }
+                            }
                             self.page += 1
                             self.populatePokemonItems(searchText: "", page: 0, loadingId: self.loadingId)
                         }

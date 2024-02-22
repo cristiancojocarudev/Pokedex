@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SDWebImageSVGCoder
+import SwiftData
 
 @main
 struct PokedexApp: App {
@@ -18,6 +19,9 @@ struct PokedexApp: App {
     var body: some Scene {
         WindowGroup {
             HomeView()
+                .modelContainer(for: [
+                    PokemonReference.self
+                ])
         }
     }
 }

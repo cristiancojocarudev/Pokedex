@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftData
 
 struct PokemonItem: Hashable {
     var reference: PokemonReference
@@ -19,10 +20,29 @@ struct PokemonsList: Decodable, SeriallyFetchableDataContainer {
     var results: [PokemonReference]
 }
 
-struct PokemonReference: Decodable, Hashable {
-    var id: Int?
+@Model
+class PokemonReference: Decodable, Hashable {
     var name: String
     var url: String
+    
+    init(name: String, url: String) {
+        self.name = name
+        self.url = url
+    }
+    
+    static func == (lhs: PokemonReference, rhs: PokemonReference) -> Bool {
+        return lhs.name == rhs.name
+    }
+    
+    enum CodingKeys: CodingKey {
+        case name, url
+    }
+    
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.name = try container.decode(String.self, forKey: .name)
+        self.url = try container.decode(String.self, forKey: .url)
+    }
 }
 
 struct PokemonDetails: Decodable, Hashable {
